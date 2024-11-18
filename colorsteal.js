@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      v1.0-alpha2 - fave edition
+// @version      v1.0-alpha2.5 - fave edition
 // @description  steal colorssss >:)))))
 // @author       You
 // @match        https://multiplayerpiano.org/*
@@ -20,12 +20,24 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "faves") {
             if (localStorage.fave == "") {
-                MPP.chat.send("you have no faves! (maybe you wiped your localStorage..?)")
+                MPP.chat.send("you have no faves! (maybe you wiped your faves..?)")
             } else {
                 MPP.chat.send(localStorage.fave)
             }
         }
-    if (cmd == "steal") {
+        if (cmd == "wipefaves") {
+            if (args.length == 0) {
+                MPP.chat.send("ARE YOU SURE? [y/n]")
+            } else {
+                if (args[1] == "y") {
+                MPP.chat.send("wiped!")
+                localStorage.setItem("fave", "")
+                } else {
+                if (args[1] == "n") { MPP.chat.send("ok!") }
+                }
+            }
+        }
+        if (cmd == "steal") {
         MPP.client.sendArray([{
             m: 'userset',
             set: {
@@ -73,5 +85,5 @@ MPP.client.on('a', function(m) {
             }
         }]);
     }
-    }
+   / }
 });
