@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         steal color
+// @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0
+// @version      v1.1-alpha - fave edition
 // @description  steal colorssss >:)))))
 // @author       You
 // @match        https://multiplayerpiano.org/*
@@ -12,35 +12,18 @@
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
     var cmd = args[0];
-    // commands
+    // cmds
     if (m.p.id == MPP.client.participantId) {
-    if (cmd == "michael" && args[1] == "cheese") {
-        MPP.chat.send("did you know michael cheese?")
-            }
-
-        if (cmd == "addfave") {
-            var faves = fave.push(m.a.substring(8).trim())
-            localStorage.setItem("fave", fave)
+        if (cmd == "fave") {
+            localStorage.setItem("fave", m.a.substring(8).trim())
+            MPP.chat.send("faved!")
         }
         if (cmd == "faves") {
-            MPP.chat.send(localStorage.fave)
-        }
-        if (cmd == "clear") {
-            MPP.client.sendArray([{
-                m: 'userset',
-                set: {
-                    name: "​"
-                }
-            }]);
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("​")
-            MPP.chat.send("reset")
+            if (localStorage.fave == "") {
+                MPP.chat.send("you have no faves! (maybe you wiped your localStorage..?)")
+            } else {
+                MPP.chat.send(localStorage.fave)
+            }
         }
     if (cmd == "steal") {
         MPP.client.sendArray([{
@@ -59,12 +42,11 @@ MPP.client.on('a', function(m) {
             }
         }]);
     }
-    if (cmd == "what's" && args[1] == "my" && args[2] == "color") {
+    if (cmd == "mycolor") {
         MPP.chat.send(MPP.client.ppl[MPP.client.participantId].color)
     }
-
     if (cmd == "settings") {
-        MPP.chat.send(JSON.stringify(MPP.client.channel.settings))
+        console.log(JSON.stringify(MPP.client.channel.settings))
     }
     if (cmd == "about") {
         MPP.chat.send(JSON.stringify(MPP.client.ppl[args[1]]))
