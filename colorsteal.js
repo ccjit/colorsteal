@@ -85,5 +85,5 @@ MPP.client.on('a', function(m) {
             }
         }]);
     }
-   / }
+    }
 });
