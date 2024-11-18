@@ -6,4 +6,4 @@ this version of colorsteal is only for the public, since i'll add private featur
 
 but anyway, i'd like to make this project more accessible to beginners and optimize the code (maybe a bit too far...)
 
-this is just some shitshow i made out of boredom, have fun messing around, and always put your own perspective of colorsteal in the "me" branch.
+this is just some shitshow i made out of boredom, have fun messing around, and always put your own perspective of colorsteal in this branch.
