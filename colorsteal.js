@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      v1.1-alpha - fave edition
+// @version      v1.0-alpha2 - fave edition
 // @description  steal colorssss >:)))))
 // @author       You
 // @match        https://multiplayerpiano.org/*
