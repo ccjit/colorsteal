@@ -15,7 +15,7 @@ MPP.client.on('a', function(m) {
     // cmds
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "fave") {
-            localStorage.setItem("fave", m.a.substring(8).trim())
+            localStorage.setItem("fave", m.a.substring(4).trim())
             MPP.chat.send("faved!")
         }
         if (cmd == "faves") {
