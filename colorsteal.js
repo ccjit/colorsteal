@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      v1.0-alpha3 - stats edition
+// @version      v1.0-alpha3.5 - stats edition
 // @description  steal colorssss >:)))))
-// @author       You
+// @author       circjit
 // @match        https://multiplayerpiano.org/*
 // @match        https://multiplayerpiano.net/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=multiplayerpiano.org
@@ -46,8 +46,19 @@ MPP.client.on('a', function(m) {
                 }
             }]);
         }
+        if (cmd == "stat") {
+            if (args[1].length + m.p.name + 2 > 40) {
+                MPP.chat.send("stat too long!! (final name length: " + (args[1].length + m.p.name + 2) + ")")
+            } else {
+                MPP.chat.send("name " + args[1])
+                MPP.chat.send("set!")
+            }
+        }
         if (cmd == "back") {
             MPP.chat.send("reset")
+        }
+        if (cmd == "") {
+            
         }
         if (cmd == "steal") {
         MPP.client.sendArray([{
