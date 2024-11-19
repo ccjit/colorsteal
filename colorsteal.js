@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      v1.0-alpha3.5 - stats edition
+// @version      v1.0-alpha3.75 -  (fave) stats edition
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -53,6 +53,22 @@ MPP.client.on('a', function(m) {
                 MPP.chat.send("name " + args[1])
                 MPP.chat.send("set!")
             }
+        }
+        if (cmd == "favestat") {
+            localStorage.stat.push(msg.a.substring(8).trim())
+            MPP.chat.send("set!")
+        }
+        if (cmd == "prestat") {/
+            if (localStorage.stat == "") {
+                MPP.chat.send("oh no! it seems like you don't have any faved stats yet. maybe fave one?")
+            } else {
+                MPP.chat.send("stat " localStorage.stat[args[1].toInt() - 1])
+                MPP.chat.send("set!")
+            }
+        }
+        if (cmd == "wipestats") {
+            localStorage.setItem("stat", [])
+            MPP.chat.send("wiped!")
         }
         if (cmd == "back") {
             MPP.chat.send("reset")
