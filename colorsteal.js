@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      v1.0-alpha3.85 -  (fave) stats edition
+// @version      v1.0-alpha3.95 -  (fave) stats edition
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -63,7 +63,7 @@ MPP.client.on('a', function(m) {
             MPP.chat.send("set!")
         }
         if (cmd == "wipestats") {
-            localStorage.setItem("stat", [])
+            localStorage.setItem("stat", "")
             MPP.chat.send("wiped!")
         }
         if (cmd == "back") {
