@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      v1.0-alpha3.95 -  (fave) stats edition
+// @version      1.0-alpha3.99 -  (fave) stats edition
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -9,6 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=multiplayerpiano.org
 // @grant        none
 // ==/UserScript==
+// coding is key
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
     var cmd = args[0];
@@ -50,10 +51,10 @@ MPP.client.on('a', function(m) {
             MPP.chat.send(localStorage.stat)
         }
         if (cmd == "stat") {
-            if (args[1].length + m.p.name + 2 > 40) {
-                MPP.chat.send("stat too long!! (final name length: " + (args[1].length + m.p.name + 2) + ")")
+            if (m.a.substring(8).trim().length + m.p.name + 2 > 40) {
+                MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(8).trim().length + m.p.name + 2) + ")")
             } else {
-                MPP.chat.send("name " + m.p.name + " [" + args[1] + "]")
+                MPP.chat.send("name " + m.p.name + " [" + m.a.substring(8).trim() + "]")
                 MPP.chat.send("set!")
             }
         }
@@ -122,3 +123,4 @@ MPP.client.on('a', function(m) {
     }
     }
 });
+// k'jh vrbgf dlzovhhl gu uhhiyopu fwyutg wju
