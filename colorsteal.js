@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0-alpha4 - random edition
+// @version      1.0-alpha4.1 - random edition
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -119,14 +119,14 @@ MPP.client.on('a', function(m) {
         if (cmd == "dice") {
             MPP.chat.send(Math.floor(Math.random()*parseInt(args[1])) + 1, 10)
         }
-/*        if (cmd == "flip") {
+        if (cmd == "flip") {
             if (Math.random() < (69/100)) {
-                revname()
+                MPP.chat.send("\*flips*")
             } else {
-                MPP.chat.send("n oi won't")
+                MPP.chat.send("\*fails*")
             }
 
-        } */
+        }
         if (cmd == "steal") {
         MPP.client.sendArray([{
             m: 'userset',
