@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0-alpha3.99 -  (fave) stats edition
+// @version      1.0-alpha4 - random edition
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -9,7 +9,53 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=multiplayerpiano.org
 // @grant        none
 // ==/UserScript==
-// coding is key
+// always double check your connections
+
+/*function revname(name) {
+let data = name
+data.replace(/[\-_]/g, function (n) {
+    return {
+        'a': 'ɐ',
+        'b': 'p',
+        'c': 'ɔ',
+        'd': 'q',
+        'e': 'ǝ',
+        'f': 'ɟ',
+        'g': 'ɓ',
+        'h': 'ɥ',
+        'i': 'ᴉ',
+        'j': 'ſ',
+        'k': 'ʞ',
+        'l': 'l',
+        'm': 'ɯ',
+        'n': 'u',
+        'o': 'o',
+        'p': 'b',
+        'q': 'd',
+        'r': 'ɹ',
+        't': 'ʇ',
+        'u': 'n', // derwear hah gottem
+        'v': 'ʌ',
+        'w': 'ʍ',
+        'y': 'ʎ',
+        '1': '⇂',
+        '2': 'ᘔ',
+        '3': 'Ɛ',
+        '4': '߈',
+        '5': 'ဌ',
+        '7': 'ㄥ'
+    }[n];
+    let yar = MPP.client.ppl[MPP.client.participantId].color
+    MPP.client.sendArray([{
+        m: 'userset',
+        set: {
+            name: data,
+            color: yar.split("").reverse().join("")
+        }
+    }]);
+});
+}
+*/
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
     var cmd = args[0];
@@ -70,9 +116,17 @@ MPP.client.on('a', function(m) {
         if (cmd == "back") {
             MPP.chat.send("reset")
         }
-        if (cmd == "") {
-
+        if (cmd == "dice") {
+            MPP.chat.send(Math.floor(Math.random()*parseInt(args[1])) + 1, 10)
         }
+/*        if (cmd == "flip") {
+            if (Math.random() < (69/100)) {
+                revname()
+            } else {
+                MPP.chat.send("n oi won't")
+            }
+
+        } */
         if (cmd == "steal") {
         MPP.client.sendArray([{
             m: 'userset',
@@ -123,4 +177,6 @@ MPP.client.on('a', function(m) {
     }
     }
 });
-// k'jh vrbgf dlzovhhl gu uhhiyopu fwyutg wju
+// "but there is no load in this circuit, so it outputs a constant AC voltage."
+// "i need to load these up on my bag, let me see if they'll fit..."
+// 1
