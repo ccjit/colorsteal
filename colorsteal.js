@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0-alpha4.1 - random edition
+// @version      1.0-alpha4.2 - random edition
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -54,7 +54,7 @@ data.replace(/[\-_]/g, function (n) {
         }
     }]);
 });
-}
+} we forget about the damage
 */
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
@@ -97,7 +97,7 @@ MPP.client.on('a', function(m) {
             MPP.chat.send(localStorage.stat)
         }
         if (cmd == "stat") {
-            if (m.a.substring(8).trim().length + m.p.name + 2 > 40) {
+            if (m.a.substring(4).trim().length + m.p.name + 2 > 39) {
                 MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name + 2) + ")")
             } else {
                 MPP.chat.send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
@@ -163,7 +163,7 @@ MPP.client.on('a', function(m) {
         MPP.client.sendArray([{
             m: 'userset',
             set: {
-                name: m.a.substring(5).trim()
+                name: m.a.substring(4).trim()
             }
         }]);
     }
