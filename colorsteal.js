@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0-alpha4.2 - random edition
+// @version      1.0-beta1 - etc pack
 // @description  steal colorssss >:)))))
 // @author       circjit
 // @match        https://multiplayerpiano.org/*
@@ -119,6 +119,7 @@ MPP.client.on('a', function(m) {
         if (cmd == "dice") {
             MPP.chat.send(`${Math.floor(Math.random()*parseInt(args[1]))}`)
         }
+
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
                 MPP.chat.send("\*flips*")
@@ -177,6 +178,5 @@ MPP.client.on('a', function(m) {
     }
     }
 });
-// "but there is no load in this circuit, so it outputs a constant AC voltage."
-// "i need to load these up on my bag, let me see if they'll fit..."
-// 1
+// finally on beta
+// 5
