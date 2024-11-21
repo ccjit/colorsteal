@@ -98,9 +98,9 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "stat") {
             if (m.a.substring(8).trim().length + m.p.name + 2 > 40) {
-                MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(8).trim().length + m.p.name + 2) + ")")
+                MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name + 2) + ")")
             } else {
-                MPP.chat.send("name " + m.p.name + " [" + m.a.substring(8).trim() + "]")
+                MPP.chat.send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
                 MPP.chat.send("set!")
             }
         }
@@ -117,7 +117,7 @@ MPP.client.on('a', function(m) {
             MPP.chat.send("reset")
         }
         if (cmd == "dice") {
-            MPP.chat.send(Math.floor(Math.random()*parseInt(args[1])) + 1, 10)
+            MPP.chat.send(`${Math.floor(Math.random()*parseInt(args[1]))}`)
         }
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
