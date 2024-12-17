@@ -3,7 +3,7 @@
 // @namespace    https://multiplayerpiano.org/#
 // @version      1.0-beta1 - etc pack
 // @description  steal colorssss >:)))))
-// @author       circjit
+// @author       ccjt
 // @match        https://multiplayerpiano.org/*
 // @match        https://multiplayerpiano.net/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=multiplayerpiano.org
@@ -140,8 +140,8 @@ MPP.client.on('a', function(m) {
         MPP.client.sendArray([{
             m: 'userset',
             set: {
-                name: "circjit",
-                color: '#007bff'
+                name: "ccjt 🏳️‍⚧️",
+                color: '#ec98e1'
             }
         }]);
     }
