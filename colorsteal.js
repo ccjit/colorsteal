@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0-beta1 - etc pack
+// @version      1.0
 // @description  steal colorssss >:)))))
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -9,53 +9,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=multiplayerpiano.org
 // @grant        none
 // ==/UserScript==
-// always double check your connections
-
-/*function revname(name) {
-let data = name
-data.replace(/[\-_]/g, function (n) {
-    return {
-        'a': 'ɐ',
-        'b': 'p',
-        'c': 'ɔ',
-        'd': 'q',
-        'e': 'ǝ',
-        'f': 'ɟ',
-        'g': 'ɓ',
-        'h': 'ɥ',
-        'i': 'ᴉ',
-        'j': 'ſ',
-        'k': 'ʞ',
-        'l': 'l',
-        'm': 'ɯ',
-        'n': 'u',
-        'o': 'o',
-        'p': 'b',
-        'q': 'd',
-        'r': 'ɹ',
-        't': 'ʇ',
-        'u': 'n', // derwear hah gottem
-        'v': 'ʌ',
-        'w': 'ʍ',
-        'y': 'ʎ',
-        '1': '⇂',
-        '2': 'ᘔ',
-        '3': 'Ɛ',
-        '4': '߈',
-        '5': 'ဌ',
-        '7': 'ㄥ'
-    }[n];
-    let yar = MPP.client.ppl[MPP.client.participantId].color
-    MPP.client.sendArray([{
-        m: 'userset',
-        set: {
-            name: data,
-            color: yar.split("").reverse().join("")
-        }
-    }]);
-});
-} we forget about the damage
-*/
+// "u": "n", derwear haha gottem
+// (^preserve^)
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
     var cmd = args[0];
@@ -178,5 +133,4 @@ MPP.client.on('a', function(m) {
     }
     }
 });
-// finally on beta
-// 5
+// 100
