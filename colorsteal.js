@@ -14,6 +14,7 @@
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
     var cmd = args[0];
+    args = args.slice(1);
     // cmds
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "fave") {
