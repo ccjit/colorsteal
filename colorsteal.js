@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.0
+// @version      1.1-alpha1
 // @description  steal colorssss >:)))))
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -70,9 +70,6 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "back") {
             MPP.chat.send("reset")
-        }
-        if (cmd == "dice") {
-            MPP.chat.send(`${Math.floor(Math.random()*parseInt(args[1]))}`)
         }
 
         if (cmd == "flip") {
