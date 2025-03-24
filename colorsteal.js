@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.1-alpha1
+// @version      1.1-alpha2
 // @description  steal colorssss >:)))))
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -104,7 +104,11 @@ MPP.client.on('a', function(m) {
         console.log(JSON.stringify(MPP.client.channel.settings))
     }
     if (cmd == "about") {
-        MPP.chat.send(JSON.stringify(MPP.client.ppl[args[1]]))
+        if (args.length == 0) {
+            MPP.chat.send("Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by @" + MPP.client.participantId + " in 2024-2025")
+        } else {
+            MPP.chat.send(JSON.stringify(MPP.client.ppl[args[1]]))
+        }
     }
     if (cmd == "goto") {
         MPP.client.setChannel(args[1])
@@ -130,4 +134,5 @@ MPP.client.on('a', function(m) {
     }
     }
 });
-// 100
+// add funny satire joke here
+// [LAUGHTER]
