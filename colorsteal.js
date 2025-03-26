@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.1-alpha2.1
+// @version      1.1-alpha2.2
 // @description  steal colorssss >:)))))
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -12,8 +12,8 @@
 // "u": "n", derwear haha gottem
 // (^preserve^)
 MPP.client.on('a', function(m) {
-    var args = m.a.split(' ');
-    var cmd = args[0];
+    let args = m.a.split(' ');
+    let cmd = args[0];
     // cmds
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "fave") {
@@ -102,6 +102,11 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "settings") {
             console.log(JSON.stringify(MPP.client.channel.settings))
+        }
+        if (cmd == "define") {
+            if (args[1] == "reset") {
+                let resetname = `${args[2]}`
+            }
         }
         if (cmd == "about") {
             MPP.chat.send(JSON.stringify(MPP.client.ppl[args[1]]))
