@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.1-alpha2
+// @version      1.1-alpha2.1
 // @description  steal colorssss >:)))))
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -14,7 +14,6 @@
 MPP.client.on('a', function(m) {
     var args = m.a.split(' ');
     var cmd = args[0];
-    args = args.slice(1);
     // cmds
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "fave") {
@@ -33,10 +32,10 @@ MPP.client.on('a', function(m) {
                 MPP.chat.send("ARE YOU SURE? [y/n]")
             } else {
                 if (args[1] == "y") {
-                MPP.chat.send("wiped!")
-                localStorage.setItem("fave", "")
+                    MPP.chat.send("wiped!")
+                    localStorage.setItem("fave", "")
                 } else {
-                if (args[1] == "n") { MPP.chat.send("ok!") }
+                    if (args[1] == "n") { MPP.chat.send("ok!") }
                 }
             }
         }
@@ -82,58 +81,55 @@ MPP.client.on('a', function(m) {
 
         }
         if (cmd == "steal") {
-        MPP.client.sendArray([{
-            m: 'userset',
-            set: {
-                color: MPP.client.ppl[args[1]].color
-            }
-        }]);
-    }
-    if (cmd == "reset") {
-        MPP.client.sendArray([{
-            m: 'userset',
-            set: {
-                name: "ccjt 🏳️‍⚧️",
-                color: '#ec98e1'
-            }
-        }]);
-    }
-    if (cmd == "mycolor") {
-        MPP.chat.send(MPP.client.ppl[MPP.client.participantId].color)
-    }
-    if (cmd == "settings") {
-        console.log(JSON.stringify(MPP.client.channel.settings))
-    }
-    if (cmd == "about") {
-        if (args.length == 0) {
-            MPP.chat.send("Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by @" + MPP.client.participantId + " in 2024-2025")
-        } else {
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    color: MPP.client.ppl[`${args[1]}`].color
+                }
+            }]);
+        }
+        if (cmd == "reset") {
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    name: "ccjt 🏳️‍⚧️",
+                    color: '#ec98e1'
+                }
+            }]);
+        }
+        if (cmd == "mycolor") {
+            MPP.chat.send(MPP.client.ppl[MPP.client.participantId].color)
+        }
+        if (cmd == "settings") {
+            console.log(JSON.stringify(MPP.client.channel.settings))
+        }
+        if (cmd == "about") {
             MPP.chat.send(JSON.stringify(MPP.client.ppl[args[1]]))
         }
-    }
-    if (cmd == "goto") {
-        MPP.client.setChannel(args[1])
-    }
-    if (cmd == "whereami") {
-        MPP.chat.send(MPP.client.channel._id)
-    }
-    if (cmd == "name") {
-        MPP.client.sendArray([{
-            m: 'userset',
-            set: {
-                name: m.a.substring(4).trim()
-            }
-        }]);
-    }
-    if (cmd == "color") {
-        MPP.client.sendArray([{
-            m: 'userset',
-            set: {
-                color: args[1]
-            }
-        }]);
-    }
+        if (cmd == "colorsteal") {
+            MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by @${MPP.client.participantId} in 2024-2025`)
+        }
+        if (cmd == "goto") {
+            MPP.client.setChannel(args[1])
+        }
+        if (cmd == "whereami") {
+            MPP.chat.send(MPP.client.channel._id)
+        }
+        if (cmd == "name") {
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    name: m.a.substring(4).trim()
+                }
+            }]);
+        }
+        if (cmd == "color") {
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    color: args[1]
+                }
+            }]);
+        }
     }
 });
-// add funny satire joke here
-// [LAUGHTER]
