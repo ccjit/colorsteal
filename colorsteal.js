@@ -8,8 +8,8 @@
 // @icon         data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAAAXNSR0IArs4c6QAAAnpJREFUeF7tmlFShDAMhrfjDdRX9XLO6JH0ePqsZ8AJM2FiJ23DJiTAxhdZKIV8Tf4kQJmmabrc8F9JAOkBGQKpATesgZcUwcwCnSxQSmGj40yJoxkCYPyZDG3p3KYAjgAxAbRE0GL1LObYOkWrPaAWSqobNQDJWBzjpT8qANwK032tbVzV+jjs9zJ8uQdNCFgD8DYeIOzKAxJAQGPa7QUklaBE2GjMU1XvCebW6j/UAK8biL5OdoOR3SAXYt5CGOYBEVUim7ajPCABBLTbh/QAS0/ZFYC5DGWeONW1AaZJ3N+rO7g5R7VGmAg2n9BUobG2oaqzyPB8rQj+fn4Pa5mHt+fhGK5DxBVtrT7nHa4AJMbjTUohcM8QKIBenbCmO1WXwmg8GAbb+L+31BIIhwMABnPGc2BqACMRrENgrXCKQuRaDaDuTwG0thGUWAycBqqywBYa4GT3chkVAJhFAuHx/eWfXd4NTw+qGoBkxUbFi2SOrca4A4DVtyxvtWBcAfx8fM33C0K5FwguAGiVtzcIrgAwjyME+A0CGSmKIQDAcIQAACiQUUxLqsnRHPS4OwBMnZga1xi/tq+QgHAHIKkbRjde7srl/vVpNEx0PBwAunTdXLV6DGsvCAUwaqLQWM5rrLRgtwBO6wF1/0BDoPaI1jMGq9Wf0/K17bBIYTqDrhVDS+NDAWgBWp0f5gFWBmjnSQBRGqBdOavz0wPSAyJ7USs/VsyTIZAhkCHQ/jqx9bIRQu4s3LqfytaGjt61K7Qo7FQWABqqeVMbZtHKC88AJAbPnRP5emMvz/Wl9nKf5i/d4C0BqG1dQqD3dQVH70giiO8m6Ws5tOkPIuP6YibZoUkAAAAASUVORK5CYII=
 // @grant        none
 // ==/UserScript==
-let resetname = "ccjt"
-let resetcolor = "#b3acf1"
+let resetname = "꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂" // you can change this using "define reset name [name]"
+let resetcolor = "#b3acf1" // you can change this using "define reset color [color]"
 // "u": "n", derwear haha gottem
 // (^preserve^)
 MPP.client.on('a', function(m) {
@@ -29,7 +29,7 @@ MPP.client.on('a', function(m) {
                 } else if (args[2] == "fun") {
                     MPP.chat.send("Commands: flip - flips or fails")
                 } else if (args[2] == "other") {
-                    MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items | favestat - favorites a status | wipestats - wipes favorited stats |")
+                    MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items|| | Deleted commands: favestat - favorites a status | wipestats - wipes favorited stats | favestats - views favorited stats||")
                 } else if (args[1] == "usage") {
                     if (args.length == 2) {
                         MPP.chat.send("Please specify a command to know about. Example: help usage steal")
@@ -65,17 +65,19 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("Faves - This command tells you your favorited items.")
                     } else if (args[2] == "wipefaves") {
                         MPP.chat.send("WipeFaves - This command erases all your favorited items permanently, with no way to bring them back.")
-                    } else if (args[2] == "favestat") {
+                    /*} else if (args[2] == "favestat") {
                         MPP.chat.send("FaveStat - This command favorites a status. This command is prone to deletion because you can also use the \"fave\" command for the same effect.")
                     } else if (args[2] == "wipestats") {
                         MPP.chat.send("WipeStats - This command wipes all of your favorited statuses, with no way to recover them.")
+                    } else if (args[2] == "favestats") {
+                        MPP.chat.send("FaveStats - This command shows your favorited statuses.")*/
                     }
                 }
             }
         }
         if (cmd == "fave") {
             if (args.length == 1) {
-                localStorage.setItem("fave", localStorage.fave + ", " + m.p.color)
+                localStorage.setItem("fave", localStorage.fave + ", color: " + m.p.color + " - name: " + m.p.name)
                 MPP.chat.send('faved!')
             } else {
                 localStorage.setItem("fave", localStorage.fave + ", " + m.a.substring(4).trim())
@@ -101,9 +103,6 @@ MPP.client.on('a', function(m) {
                 }
             }
         }
-        if (cmd == "favestats") {
-            MPP.chat.send(localStorage.stat)
-        }
         if (cmd == "stat") {
             if (m.a.substring(4).trim().length + m.p.name + 2 > 40) {
                 MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name.length + 2) + ")")
@@ -111,6 +110,9 @@ MPP.client.on('a', function(m) {
                 MPP.chat.send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
                 MPP.chat.send("set!")
             }
+        }
+        /*if (cmd == "favestats") {
+            MPP.chat.send(localStorage.stat)
         }
         if (cmd == "favestat") {
             let stat = localStorage.stat
@@ -120,7 +122,7 @@ MPP.client.on('a', function(m) {
         if (cmd == "wipestats") {
             localStorage.setItem("stat", "")
             MPP.chat.send("wiped!")
-        }
+        }*/
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
                 MPP.chat.send("\*flips*")
@@ -213,7 +215,7 @@ MPP.client.on('a', function(m) {
             }
         }
         if (cmd == "goto") {
-            MPP.client.setChannel(args[1])
+            MPP.client.setChannel(m.a.substring(4).trim())
         }
         if (cmd == "whereami") {
             MPP.chat.send("You're in the room \"" + MPP.client.channel._id + "\".")
