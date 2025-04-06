@@ -211,7 +211,7 @@ MPP.client.on('a', function(m) {
             if (args.length == 0) {
                 MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by ccjt in 2024-2025`)
             } else {
-                MPP.chat.send(args[1] + "'s info - Color: " + MPP.client.ppl[args[1]].color + " - Mouse Position: X" + MPP.client.ppl[args[1]].x + ", Y" + MPP.client.ppl[args[1]].y + " - " + MPP.client.ppl[args[1]].afk ? "They are currently AFK." : "They are currently active." + "You can use \" steal " + args[1] + "\" to steal their color!||")
+                MPP.chat.send(args[1] + "'s info - Name: " + MPP.client.ppl[args[1]].name + " Color: " + MPP.client.ppl[args[1]].color + " - Mouse Position: X" + MPP.client.ppl[args[1]].x + ", Y" + MPP.client.ppl[args[1]].y + " - AFK: " + MPP.client.ppl[args[1]].afk + " ||You can use \"steal " + args[1].trim() + "\" to steal their color!||")
             }
         }
         if (cmd == "goto") {
@@ -238,5 +238,3 @@ MPP.client.on('a', function(m) {
         }
     }
 });
-// since no one is gonna see this i'll just back up my username here
-// ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂
