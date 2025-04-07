@@ -1,21 +1,30 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.1
+// @version      1.1.1
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
+// @match        https://multiplayerpiano.net/*
 // @icon         data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAAAXNSR0IArs4c6QAAAnpJREFUeF7tmlFShDAMhrfjDdRX9XLO6JH0ePqsZ8AJM2FiJ23DJiTAxhdZKIV8Tf4kQJmmabrc8F9JAOkBGQKpATesgZcUwcwCnSxQSmGj40yJoxkCYPyZDG3p3KYAjgAxAbRE0GL1LObYOkWrPaAWSqobNQDJWBzjpT8qANwK032tbVzV+jjs9zJ8uQdNCFgD8DYeIOzKAxJAQGPa7QUklaBE2GjMU1XvCebW6j/UAK8biL5OdoOR3SAXYt5CGOYBEVUim7ajPCABBLTbh/QAS0/ZFYC5DGWeONW1AaZJ3N+rO7g5R7VGmAg2n9BUobG2oaqzyPB8rQj+fn4Pa5mHt+fhGK5DxBVtrT7nHa4AJMbjTUohcM8QKIBenbCmO1WXwmg8GAbb+L+31BIIhwMABnPGc2BqACMRrENgrXCKQuRaDaDuTwG0thGUWAycBqqywBYa4GT3chkVAJhFAuHx/eWfXd4NTw+qGoBkxUbFi2SOrca4A4DVtyxvtWBcAfx8fM33C0K5FwguAGiVtzcIrgAwjyME+A0CGSmKIQDAcIQAACiQUUxLqsnRHPS4OwBMnZga1xi/tq+QgHAHIKkbRjde7srl/vVpNEx0PBwAunTdXLV6DGsvCAUwaqLQWM5rrLRgtwBO6wF1/0BDoPaI1jMGq9Wf0/K17bBIYTqDrhVDS+NDAWgBWp0f5gFWBmjnSQBRGqBdOavz0wPSAyJ7USs/VsyTIZAhkCHQ/jqx9bIRQu4s3LqfytaGjt61K7Qo7FQWABqqeVMbZtHKC88AJAbPnRP5emMvz/Wl9nKf5i/d4C0BqG1dQqD3dQVH70giiO8m6Ws5tOkPIuP6YibZoUkAAAAASUVORK5CYII=
 // @grant        none
 // ==/UserScript==
-let resetname = "꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂" // you can change this using "define reset name [name]"
-let resetcolor = "#b3acf1" // you can change this using "define reset color [color]"
+ + " - *" + colorname + "*"
+if (localStorage.resetname == undefined) {
+    let resetname = "꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂" // you can change this using "define reset name [name]"
+    localStorage.setItem('resetname', resetname)
+}
+if (localStorage.resetcolor == undefined) {
+    let resetcolor = "#b3acf1" // you can change this using "define reset color [color]"
+    localStorage.setItem('resetcolor', resetcolor)
+}
 // "u": "n", derwear haha gottem
 // (^preserve^)
 MPP.client.on('a', function(m) {
     let args = m.a.split(' ');
     let cmd = args[0];
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+    let colorname = new Color(m.p.color).getName().substring(10).trim()
     // cmds
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "help") {
@@ -26,9 +35,9 @@ MPP.client.on('a', function(m) {
                     MPP.chat.send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
                 } else if (args[1] == "info") {
                     MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot OR says info about user - Usage: about - tells you bot info ; about [ID] - tells you info about user | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name.")
-                } else if (args[2] == "fun") {
+                } else if (args[1] == "fun") {
                     MPP.chat.send("Commands: flip - flips or fails")
-                } else if (args[2] == "other") {
+                } else if (args[1] == "other") {
                     MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items|| | Deleted commands: favestat - favorites a status | wipestats - wipes favorited stats | favestats - views favorited stats||")
                 } else if (args[1] == "usage") {
                     if (args.length == 2) {
@@ -104,25 +113,13 @@ MPP.client.on('a', function(m) {
             }
         }
         if (cmd == "stat") {
-            if (m.a.substring(4).trim().length + m.p.name + 2 > 40) {
+            if (m.a.substring(4).trim().length + m.p.name.length + 2 > 40) {
                 MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name.length + 2) + ")")
             } else {
                 MPP.chat.send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
                 MPP.chat.send("set!")
             }
         }
-        /*if (cmd == "favestats") {
-            MPP.chat.send(localStorage.stat)
-        }
-        if (cmd == "favestat") {
-            let stat = localStorage.stat
-            localStorage.setItem("stat", localStorage.stat + ", " + m.a.substring(8).trim())
-            MPP.chat.send("set!")
-        }
-        if (cmd == "wipestats") {
-            localStorage.setItem("stat", "")
-            MPP.chat.send("wiped!")
-        }*/
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
                 MPP.chat.send("\*flips*")
@@ -138,7 +135,7 @@ MPP.client.on('a', function(m) {
                     color: randomhex
                 }
             }]);
-            MPP.chat.send("Shuffled color: " + randomhex)
+            MPP.chat.send("Shuffled color: " + randomhex + " - " + colorname)
         }
         if (cmd == "steal") {
             MPP.client.sendArray([{
@@ -158,52 +155,44 @@ MPP.client.on('a', function(m) {
             }]);
         }
         if (cmd == "mycolor") {
-            MPP.chat.send(m.p.color)
+            MPP.chat.send(m.p.color + " - *" + colorname + "*")
         }
         if (cmd == "settings") {
             console.log(JSON.stringify(MPP.client.channel.settings))
         }
         if (cmd == "define") {
             if (args.length == 1) {
-                MPP.chat.send("Please insert a category to define. Categories: reset, help")
+                MPP.chat.send("Please insert a category to define. Categories: reset, help - or get a variable with \"get\"")
             } else {
                 if (args[1] == "reset") {
                     if (args.length == 2) {
-                        MPP.chat.send("Please insert a variable to define. Variables: name, color")
+                        MPP.chat.send("Please insert a variable to define. Variables: name, color - or reset to defaults with \"default\"")
                     } else {
                         if (args[2] == "name") {
                             let resetname = `${m.a.substring(17).trim()}`
-                            MPP.chat.send("Your reset name is now " + resetname + ".")
+                            localStorage.setItem("resetname", resetname)
+                            MPP.chat.send("Your reset name is now " + localStorage.resetname + ".")
                         } else if (args[2] == "color") {
                             let resetcolor = `${m.a.substring(18).trim()}`
-                            MPP.chat.send("Your reset color is now " + resetcolor + ".")
+                            localStorage.setItem("resetcolor", resetcolor)
+                            MPP.chat.send("Your reset color is now " + localStorage.resetcolor + ".")
                         } else if (args[2] == "default") {
                             let resetname = `Anonymous`
+                            localStorage.setItem("resetname", resetname)
                             MPP.chat.send("Your reset name is now Anonymous.")
                             let resetcolor = randomhex
-                            MPP.chat.send("Your reset color is now " + randomhex + ".")
+                            localStorage.setItem("resetcolor", resetcolor)
+                            MPP.chat.send("Your reset color is now " + localStorage.resetcolor + ".")
+                        }
+                    } else if (args[1] == 'get') {
+                        if (args.length == 2) {
+                            MPP.chat.send("Please insert a variable. Variables: name, color")
+                        } else if (args[2] == "name") {
+                            MPP.chat.send("Your reset name is " + localStorage.resetname)
+                        } else if (args[2] == "color") {
+                            MPP.chat.send('Your reset name is ' + lccaoStorage.resetcolor)
                         }
                     }
-                /*} else if (args[1] == "help") {
-                     if (args.length == 1) {
-                        MPP.chat.send("Please insert a variable to define. Variables: on, off")
-                    } else {
-                        if (args[2] == "on") {
-                            if (!help) {
-                                let help = true
-                                MPP.chat.send("Help command is now on.")
-                            } else {
-                                MPP.chat.send("Help command is already on.")
-                            }
-                        } else if (args[2] == "off") {
-                            if (help) {
-                                let help = false
-                                MPP.chat.send("Help command is now off.")
-                            } else {
-                                MPP.chat.send("Help command is already off.")
-                            }
-                        }
-                    }*/
                 }
             }
         }
@@ -227,6 +216,7 @@ MPP.client.on('a', function(m) {
                     name: m.a.substring(4).trim()
                 }
             }]);
+            MPP.chat.send("Name set to " + args[1] + ".")
         }
         if (cmd == "color") {
             MPP.client.sendArray([{
@@ -235,6 +225,7 @@ MPP.client.on('a', function(m) {
                     color: args[1]
                 }
             }]);
+            MPP.chat.send("Color set to " + args[1] + ".")
         }
     }
 });
