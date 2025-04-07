@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://multiplayerpiano.org/#
-// @version      1.1.1
+// @version      1.1.2
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -10,13 +10,22 @@
 // @grant        none
 // ==/UserScript==
 if (localStorage.resetname == undefined) {
-    let resetname = "꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂" // you can change this using "define reset name [name]"
-    localStorage.setItem('resetname', resetname)
+    localStorage.setItem('resetname', "꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂") // you can change this using "define reset name [name]"
 }
 if (localStorage.resetcolor == undefined) {
-    let resetcolor = "#b3acf1" // you can change this using "define reset color [color]"
-    localStorage.setItem('resetcolor', resetcolor)
+    localStorage.setItem('resetcolor', "#b3acf1") // you can change this using "define reset color [color]"
 }
+const shitposts = [
+    "Why So Serious? - https://cdn.discordapp.com/attachments/1236157503671107606/1358904845431603440/why_so_serious.mp4?ex=67f58a42&is=67f438c2&hm=1b9442f62b013515dd92f4db27d259feb50d8377ec61af460b68a6faa5dc586a&",
+    "Radiation - https://cdn.discordapp.com/attachments/1236157503671107606/1358904846253555712/radiation.mp4?ex=67f58a42&is=67f438c2&hm=f978f66ebe08df6bcd8721713778e67244f4bb0aea72b8fece0e587ec0eb2994&",
+    'LVL 5 - https://cdn.discordapp.com/attachments/1236157503671107606/1358904846736032007/lvl5.mp4?ex=67f58a42&is=67f438c2&hm=7704ce2f7be8e465981ccef2dbc1d0717320feb7d169dee6b0dc77ada9526134&',
+    'Lobotomy - https://cdn.discordapp.com/attachments/1236157503671107606/1358904847390212157/lobotomy.mp4?ex=67f58a42&is=67f438c2&hm=22db51ed65522e6a11632e6274e01b4ce2a7d1ce695db3cfb7a4fdcee9e4d6cc&',
+    'Armor - https://cdn.discordapp.com/attachments/1236157503671107606/1358904848136933568/armor.mp4?ex=67f58a43&is=67f438c3&hm=0284f904d2151887ee273bbd4695da53fb61d71fe0ad3f778375f818f7f09888&',
+    'Black Pencil - https://cdn.discordapp.com/attachments/1236157503671107606/1358904848694771804/black_pencil.mp4?ex=67f58a43&is=67f438c3&hm=3a1c66fff92f8de4dca4816320bef30d50d8120ed7ec4c34431448e698b33428&',
+    'Pink Revolution - https://cdn.discordapp.com/attachments/1236157503671107606/1358904849315397672/pink_revolution.mp4?ex=67f58a43&is=67f438c3&hm=72db3a8514ed79c612b94b0908c53e10e23d390e02a425f979b465e5a035b284&',
+    'Double Сum - https://cdn.discordapp.com/attachments/1236157503671107606/1358904849823174830/double_cum.mp4?ex=67f58a43&is=67f438c3&hm=452da3ed3c40851100555fd04e2a61367ad0d8d76b45f8d5d0ffde361fb5909d&',
+    'LoFi Radio - https://cdn.discordapp.com/attachments/1236157503671107606/1358904851177935131/lofi_radio.mp4?ex=67f58a43&is=67f438c3&hm=f84f32af7b0e107325f0b25ca8230f1d6337275359c97c2d0c62a9a9dca923bd&',
+]
 // "u": "n", derwear haha gottem
 // (^preserve^)
 MPP.client.on('a', function(m) {
@@ -24,6 +33,7 @@ MPP.client.on('a', function(m) {
     let cmd = args[0];
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
     let colorname = new Color(m.p.color).getName().substring(10).trim()
+    let shitpost = shitposts[Math.floor(Math.random()*shitposts.length)]
     // cmds
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "help") {
@@ -35,7 +45,7 @@ MPP.client.on('a', function(m) {
                 } else if (args[1] == "info") {
                     MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot OR says info about user - Usage: about - tells you bot info ; about [ID] - tells you info about user | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name.")
                 } else if (args[1] == "fun") {
-                    MPP.chat.send("Commands: flip - flips or fails")
+                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost")
                 } else if (args[1] == "other") {
                     MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items|| | Deleted commands: favestat - favorites a status | wipestats - wipes favorited stats | favestats - views favorited stats||")
                 } else if (args[1] == "usage") {
@@ -73,6 +83,8 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("Faves - This command tells you your favorited items.")
                     } else if (args[2] == "wipefaves") {
                         MPP.chat.send("WipeFaves - This command erases all your favorited items permanently, with no way to bring them back.")
+                    } else if (args[2] == "shitpost") {
+                        MPP.chat.send("Shitpost - This command sends a link to a random Sushi Monsters shitpost.")
                     /*} else if (args[2] == "favestat") {
                         MPP.chat.send("FaveStat - This command favorites a status. This command is prone to deletion because you can also use the \"fave\" command for the same effect.")
                     } else if (args[2] == "wipestats") {
@@ -82,6 +94,9 @@ MPP.client.on('a', function(m) {
                     }
                 }
             }
+        }
+        if (cmd == 'shitpost') {
+            MPP.chat.send(shitpost)
         }
         if (cmd == "fave") {
             if (args.length == 1) {
@@ -148,8 +163,8 @@ MPP.client.on('a', function(m) {
             MPP.client.sendArray([{
                 m: 'userset',
                 set: {
-                    name: resetname,
-                    color: resetcolor
+                    name: localStorage.resetname,
+                    color: localStorage.resetcolor
                 }
             }]);
         }
@@ -168,38 +183,34 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("Please insert a variable to define. Variables: name, color - or reset to defaults with \"default\"")
                     } else {
                         if (args[2] == "name") {
-                            let resetname = `${m.a.substring(17).trim()}`
-                            localStorage.setItem("resetname", resetname)
+                            localStorage.setItem("resetname", m.a.substring(17).trim())
                             MPP.chat.send("Your reset name is now " + localStorage.resetname + ".")
                         } else if (args[2] == "color") {
-                            let resetcolor = `${m.a.substring(18).trim()}`
-                            localStorage.setItem("resetcolor", resetcolor)
+                            localStorage.setItem("resetcolor", m.a.substring(18).trim())
                             MPP.chat.send("Your reset color is now " + localStorage.resetcolor + ".")
                         } else if (args[2] == "default") {
-                            let resetname = `Anonymous`
-                            localStorage.setItem("resetname", resetname)
+                            localStorage.setItem("resetname", 'Anonymous')
                             MPP.chat.send("Your reset name is now Anonymous.")
-                            let resetcolor = randomhex
-                            localStorage.setItem("resetcolor", resetcolor)
+                            localStorage.setItem("resetcolor", randomhex)
                             MPP.chat.send("Your reset color is now " + localStorage.resetcolor + ".")
                         }
-                    } else if (args[1] == 'get') {
-                        if (args.length == 2) {
-                            MPP.chat.send("Please insert a variable. Variables: name, color")
-                        } else if (args[2] == "name") {
-                            MPP.chat.send("Your reset name is " + localStorage.resetname)
-                        } else if (args[2] == "color") {
-                            MPP.chat.send('Your reset name is ' + lccaoStorage.resetcolor)
-                        }
+                    }
+                } else if (args[1] == 'get') {
+                    if (args.length == 2) {
+                        MPP.chat.send("Please insert a variable. Variables: resetname, resetcolor")
+                    } else if (args[2] == "resetname") {
+                        MPP.chat.send("Your reset name is " + localStorage.resetname)
+                    } else if (args[2] == "resetcolor") {
+                        MPP.chat.send('Your reset color is ' + localStorage.resetcolor)
                     }
                 }
             }
         }
         if (cmd == "about") {
-            if (args.length == 0) {
+            if (args.length == 1) {
                 MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by ccjt in 2024-2025`)
             } else {
-                MPP.chat.send(args[1] + "'s info - Name: " + MPP.client.ppl[args[1]].name + " Color: " + MPP.client.ppl[args[1]].color + " - Mouse Position: X" + MPP.client.ppl[args[1]].x + ", Y" + MPP.client.ppl[args[1]].y + " - AFK: " + MPP.client.ppl[args[1]].afk + " ||You can use \"steal " + args[1].trim() + "\" to steal their color!||")
+                MPP.chat.send(args[1] + "'s info - Name: " + MPP.client.ppl[args[1]].name + " Color: " + MPP.client.ppl[args[1]].color + " - *" + colorname + "* - Mouse Position: X" + MPP.client.ppl[args[1]].x + ", Y" + MPP.client.ppl[args[1]].y + " - AFK: " + MPP.client.ppl[args[1]].afk + " ||You can use \"steal " + args[1].trim() + "\" to steal their color!||")
             }
         }
         if (cmd == "goto") {
