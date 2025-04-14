@@ -120,7 +120,7 @@ MPP.client.on('a', function(m) {
             } else {
                 if (args[1] == "y") {
                     MPP.chat.send("wiped!")
-                    localStorage.setItem("fave", "")
+                    localStorage.removeItem('fave')
                 } else {
                     if (args[1] == "n") { MPP.chat.send("ok!") }
                 }
