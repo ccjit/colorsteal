@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         object steal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.2
+// @version      1.0
 // @description  colorsteal but it's a javascript object you can use
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
