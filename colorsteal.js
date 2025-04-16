@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.4
+// @version      1.1.5
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -91,9 +91,9 @@ MPP.client.on('a', function(m) {
                 if (args[1] == "userset") {
                     MPP.chat.send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
                 } else if (args[1] == "info") {
-                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot OR says info about user - Usage: about - tells you bot info ; about [ID] - tells you info about user | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name.")
+                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name.")
                 } else if (args[1] == "fun") {
-                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost")
+                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids")
                 } else if (args[1] == "other") {
                     MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items|| | Deleted commands: favestat - favorites a status | wipestats - wipes favorited stats | favestats - views favorited stats||")
                 } else if (args[1] == "usage") {
@@ -102,7 +102,7 @@ MPP.client.on('a', function(m) {
                     } else if (args[2] == "steal") {
                         MPP.chat.send("Steal - This command takes the color from the ID you specify and sets your color to it. - Example: steal [ID]")
                     } else if (args[2] == "color") {
-                        MPP.chat.send("Color - This command sets your color to the hex code you specify, or tells the color of the specified ID. - Example 1: color #bababa - This example command sets your color to Baby Talk Grey. - Example 2: ")
+                        MPP.chat.send("Color - This command sets your color to the hex code you specify, or tells the color of the specified ID. - Example 1: color #bababa - This example command sets your color to Baby Talk Grey. - This command can also get the color from a desired ID.")
                     } else if (args[2] == "name") {
                         MPP.chat.send("Name - This command sets your name to the text you specify. - Example: name Anonymous is using colorsteal - This example command sets your name to \"Anonymous is using colorsteal\".")
                     } else if (args[2] == "shuffle") {
@@ -111,8 +111,6 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("Reset - This command resets your name and color to your default name and color, and can also reset your name or your color independently, by using \"reset name\" and \"reset color\" respectively. You can change your reset name and color by doing \"define reset name [name]\" and \"define reset color [hex code]\" respectively. - Example: reset")
                     } else if (args[2] == "mycolor") {
                         MPP.chat.send("MyColor - This command tells you your current color in hex. - Example: mycolor - This example command tells you your current color.")
-                    } else if (args[2] == "settings") {
-                        MPP.chat.send("Settings - This command logs the current room settings in your DevTools console. You can access it by pressing F12 or CTRL+Shift+I and clicking on \"Console\" on the tabs on the top of the menu that opens.")
                     } else if (args[2] == "about") {
                         MPP.chat.send("About - This command tells you bot info when no ID is provided, but if you specify an ID, it will tell you the info about that user. - Example 1: about ; This example sends a message with bot info. - Example 2: about [ID] ; This example sends a message with the info about the specified ID.")
                     } else if (args[2] == "help") {
@@ -133,7 +131,17 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("WipeFaves - This command erases all your favorited items permanently, with no way to bring them back.")
                     } else if (args[2] == "shitpost") {
                         MPP.chat.send("Shitpost - This command sends a link to a random Sushi Monsters shitpost.")
-                    /*} else if (args[2] == "favestat") {
+                    } else if (args[2] == "ppl") {
+                        MPP.chat.send("PPL - This command sends a list of all IDs. You can get info about those IDs using \"about [ID]\".")
+                    } else if (args[2] == "merge") {
+                        MPP.chat.send("Merge - This command merges 2 hex colors. - Example: merge #000000 ffffff. - This example command merges the colors black (000000) and white (#ffffff) which gives #808080 (gray)")
+                    } else if (args[2] == "mergeid") {
+                        MPP.chat.send("MergeID - This command merges 2 colors from 2 IDs.")
+                    } else if (args[2] == "playalone") {
+                        MPP.chat.send("PlayAlone - This command sends you to a Play Alone room.")
+                  /*} else if (args[2] == "settings") {
+                        MPP.chat.send("Settings - This command logs the current room settings in your DevTools console. You can access it by pressing F12, CTRL+Shift+J or CTRL+Shift+I and clicking on `Console`.")
+                    } else if (args[2] == "favestat") {
                         MPP.chat.send("FaveStat - This command favorites a status. This command is prone to deletion because you can also use the \"fave\" command for the same effect.")
                     } else if (args[2] == "wipestats") {
                         MPP.chat.send("WipeStats - This command wipes all of your favorited statuses, with no way to recover them.")
@@ -218,6 +226,7 @@ MPP.client.on('a', function(m) {
                 MPP.chat.send("set!")
             }
         }
+        /*
         if (cmd == "quotacheck") {
             let a = m.p.color
             MPP.client.sendArray([{
@@ -237,7 +246,7 @@ MPP.client.on('a', function(m) {
                     color: a
                 }
             }]);
-        }
+        }*/
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
                 MPP.chat.send("\*flips*")
@@ -327,7 +336,7 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "about") {
             if (args.length == 1) {
-                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by ccjt in 2024-2025 - Running version 1.1.4`)
+                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal/blob/main/colorsteal.js - made by ccjt in 2024-2025 - Running version 1.1.5`)
             } else {
                 MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
             }
