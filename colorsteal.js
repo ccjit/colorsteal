@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         colorsteal
-// @namespace    https://multiplayerpiano.org/#
-// @version      1.1.2
+// @namespace    https://ccjit.github.io/my-site
+// @version      1.1.4
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
 // @match        https://multiplayerpiano.net/*
+// @match        https://multiplayerpiano.dev/*
+// @match        https://mpp.8448.space/*
 // @icon         data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAAAXNSR0IArs4c6QAAAnpJREFUeF7tmlFShDAMhrfjDdRX9XLO6JH0ePqsZ8AJM2FiJ23DJiTAxhdZKIV8Tf4kQJmmabrc8F9JAOkBGQKpATesgZcUwcwCnSxQSmGj40yJoxkCYPyZDG3p3KYAjgAxAbRE0GL1LObYOkWrPaAWSqobNQDJWBzjpT8qANwK032tbVzV+jjs9zJ8uQdNCFgD8DYeIOzKAxJAQGPa7QUklaBE2GjMU1XvCebW6j/UAK8biL5OdoOR3SAXYt5CGOYBEVUim7ajPCABBLTbh/QAS0/ZFYC5DGWeONW1AaZJ3N+rO7g5R7VGmAg2n9BUobG2oaqzyPB8rQj+fn4Pa5mHt+fhGK5DxBVtrT7nHa4AJMbjTUohcM8QKIBenbCmO1WXwmg8GAbb+L+31BIIhwMABnPGc2BqACMRrENgrXCKQuRaDaDuTwG0thGUWAycBqqywBYa4GT3chkVAJhFAuHx/eWfXd4NTw+qGoBkxUbFi2SOrca4A4DVtyxvtWBcAfx8fM33C0K5FwguAGiVtzcIrgAwjyME+A0CGSmKIQDAcIQAACiQUUxLqsnRHPS4OwBMnZga1xi/tq+QgHAHIKkbRjde7srl/vVpNEx0PBwAunTdXLV6DGsvCAUwaqLQWM5rrLRgtwBO6wF1/0BDoPaI1jMGq9Wf0/K17bBIYTqDrhVDS+NDAWgBWp0f5gFWBmjnSQBRGqBdOavz0wPSAyJ7USs/VsyTIZAhkCHQ/jqx9bIRQu4s3LqfytaGjt61K7Qo7FQWABqqeVMbZtHKC88AJAbPnRP5emMvz/Wl9nKf5i/d4C0BqG1dQqD3dQVH70giiO8m6Ws5tOkPIuP6YibZoUkAAAAASUVORK5CYII=
 // @grant        none
 // ==/UserScript==
@@ -14,6 +16,52 @@ if (localStorage.resetname == undefined) {
 }
 if (localStorage.resetcolor == undefined) {
     localStorage.setItem('resetcolor', "#b3acf1") // you can change this using "define reset color [color]"
+}
+function searchId(query) {
+    let found = false
+    if (query.length < 3) {
+        console.log('Search query too short. You need atleast 3 characters to search an ID from.')
+        return MPP.client.getOwnParticipant()._id
+    } else {
+        for (let i = 0; i < Object.values(MPP.client.ppl).length; i++) {
+            if (Object.values(MPP.client.ppl)[i]._id.includes(query)) {
+                let found = true
+                console.log("Found user - Name: " + Object.values(MPP.client.ppl)[i].name + " - full id: " + Object.values(MPP.client.ppl)[i]._id)
+                return Object.values(MPP.client.ppl)[i]._id
+                break
+            } else {
+                let found = false
+                console.log('not found yet')
+            }
+        }
+        if (!found) {
+            return MPP.client.getOwnParticipant()._id
+        }
+    }
+}
+function getPplIds() {
+    for (let i = 0; i < Object.values(MPP.client.ppl).length; i++) {
+        let str = Object.values(MPP.client.ppl)[i]._id.substring(0,6)
+        if (localStorage.ids == undefined) {
+            localStorage.setItem('ids', str)
+            console.log(str)
+            console.log(localStorage.ids)
+        } else {
+            localStorage.setItem('ids', localStorage.ids + ", " + str)
+            console.log(str)
+            console.log(localStorage.ids)
+        }
+    }
+    return localStorage.ids
+    localStorage.removeItem('ids')
+}
+function blendColors(colorA, colorB, amount) {
+  const [rA, gA, bA] = colorA.match(/\w\w/g).map((c) => parseInt(c, 16));
+  const [rB, gB, bB] = colorB.match(/\w\w/g).map((c) => parseInt(c, 16));
+  const r = Math.round(rA + (rB - rA) * amount).toString(16).padStart(2, '0');
+  const g = Math.round(gA + (gB - gA) * amount).toString(16).padStart(2, '0');
+  const b = Math.round(bA + (bB - bA) * amount).toString(16).padStart(2, '0');
+  return '#' + r + g + b;
 }
 const shitposts = [
     "Why So Serious? - https://cdn.discordapp.com/attachments/1236157503671107606/1358904845431603440/why_so_serious.mp4?ex=67f58a42&is=67f438c2&hm=1b9442f62b013515dd92f4db27d259feb50d8377ec61af460b68a6faa5dc586a&",
@@ -32,7 +80,7 @@ MPP.client.on('a', function(m) {
     let args = m.a.split(' ');
     let cmd = args[0];
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
-    let colorname = new Color(m.p.color).getName().substring(10).trim()
+    let colorname = function(hex) { if (new Color(hex).getName().length > 10) { return new Color(hex).getName().substring(10).trim() } else { return new Color(hex).getName() } }
     let shitpost = shitposts[Math.floor(Math.random()*shitposts.length)]
     // cmds
     if (m.p.id == MPP.client.participantId) {
@@ -54,13 +102,13 @@ MPP.client.on('a', function(m) {
                     } else if (args[2] == "steal") {
                         MPP.chat.send("Steal - This command takes the color from the ID you specify and sets your color to it. - Example: steal [ID]")
                     } else if (args[2] == "color") {
-                        MPP.chat.send("Color - This command sets your color to the hex code you specify. - Example: color #bababa - This example command sets your color to Baby Talk Grey.")
+                        MPP.chat.send("Color - This command sets your color to the hex code you specify, or tells the color of the specified ID. - Example 1: color #bababa - This example command sets your color to Baby Talk Grey. - Example 2: ")
                     } else if (args[2] == "name") {
                         MPP.chat.send("Name - This command sets your name to the text you specify. - Example: name Anonymous is using colorsteal - This example command sets your name to \"Anonymous is using colorsteal\".")
                     } else if (args[2] == "shuffle") {
                         MPP.chat.send("Shuffle - This command sets your color to a completely random color. - Example: shuffle - This example sets your color to a random color that you've probably never seen before.")
                     } else if (args[2] == "reset") {
-                        MPP.chat.send("Reset - This command resets your name and color to your default name and color. You can change your reset name and color by doing \"define reset name [name]\" and \"define reset color [hex code]\" respectively. - Example: reset")
+                        MPP.chat.send("Reset - This command resets your name and color to your default name and color, and can also reset your name or your color independently, by using \"reset name\" and \"reset color\" respectively. You can change your reset name and color by doing \"define reset name [name]\" and \"define reset color [hex code]\" respectively. - Example: reset")
                     } else if (args[2] == "mycolor") {
                         MPP.chat.send("MyColor - This command tells you your current color in hex. - Example: mycolor - This example command tells you your current color.")
                     } else if (args[2] == "settings") {
@@ -95,20 +143,56 @@ MPP.client.on('a', function(m) {
                 }
             }
         }
+        if (cmd == "merge") {
+            if (args.length < 3) {
+                MPP.chat.send("Please specify 2 hex colors to merge. If you want to merge the colors of 2 IDs, use \"mergeid\".")
+            } else if (args[1].includes('#')) {
+                if (args[2].includes('#')) {
+                    MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors(args[1], args[2], 0.5))
+                } else {
+                    MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors(args[1], "#" + args[2], 0.5))
+                }
+            } else if (args[2].includes('#')) {
+                MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors("#" + args[1], args[2], 0.5))
+            } else {
+                MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors('#' + args[1], "#" + args[2], 0.5))
+            }
+         }
+        if (cmd == "ppl") {
+            MPP.chat.send(Object.values(MPP.client.ppl).length + ": " + getPplIds())
+            localStorage.removeItem('ids')
+        }
+        if (cmd == "mergeid") {
+            if (args.length < 3) {
+                MPP.chat.send("Please specify 2 IDs to merge colors from. If you want to merge 2 hex colors, use \"merge\".")
+            } else {
+                MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + " (" + MPP.client.ppl[searchId(args[1])].color + ") + " + MPP.client.ppl[searchId(args[2])].name + " (" + MPP.client.ppl[searchId(args[2])].color + ") = " + blendColors(MPP.client.ppl[searchId(args[1])].color, MPP.client.ppl[searchId(args[2])].color, 0.5))
+            }
+        }
         if (cmd == 'shitpost') {
             MPP.chat.send(shitpost)
         }
         if (cmd == "fave") {
             if (args.length == 1) {
-                localStorage.setItem("fave", localStorage.fave + ", color: " + m.p.color + " - name: " + m.p.name)
-                MPP.chat.send('faved!')
+                if (localStorage.fave == undefined) {
+                    localStorage.setItem("fave", " color: " + m.p.color + " - name: " + m.p.name)
+                    MPP.chat.send('faved!')
+                } else {
+                    localStorage.setItem("fave", localStorage.fave + ", color: " + m.p.color + " - name: " + m.p.name)
+                    MPP.chat.send('faved!')
+                }
             } else {
-                localStorage.setItem("fave", localStorage.fave + ", " + m.a.substring(4).trim())
-                MPP.chat.send("faved!")
+                if (localStorage.fave == undefined) {
+                    localStorage.setItem("fave", m.a.substring(4).trim())
+                    MPP.chat.send("faved!")
+                } else {
+                    localStorage.setItem("fave", localStorage.fave + ", " + m.a.substring(4).trim())
+                    MPP.chat.send("faved!")
+                }
             }
         }
         if (cmd == "faves") {
-            if (localStorage.fave == "") {
+            if (localStorage.fave == undefined) {
                 MPP.chat.send("you have no faves! (maybe you wiped your faves..?)")
             } else {
                 MPP.chat.send(localStorage.fave)
@@ -128,11 +212,31 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "stat") {
             if (m.a.substring(4).trim().length + m.p.name.length + 2 > 40) {
-                MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name.length + 2) + ")")
+                MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name.length + 3) + " - maximum name length: 40)")
             } else {
                 MPP.chat.send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
                 MPP.chat.send("set!")
             }
+        }
+        if (cmd == "quotacheck") {
+            let a = m.p.color
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    color: randomhex
+                }
+            }]);
+            if (MPP.client.ppl[MPP.client.getOwnParticipant()._id].color == randomhex) {
+                MPP.chat.send("your userset quota has been met, you'll have to wait through 12 minutes at maximum.")
+            } else {
+                MPP.chat.send("your userset quota hasn't been met yet")
+            }
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    color: a
+                }
+            }]);
         }
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
@@ -140,7 +244,6 @@ MPP.client.on('a', function(m) {
             } else {
                 MPP.chat.send("\*fails*")
             }
-
         }
         if (cmd == "shuffle") {
             MPP.client.sendArray([{
@@ -149,27 +252,43 @@ MPP.client.on('a', function(m) {
                     color: randomhex
                 }
             }]);
-            MPP.chat.send("Shuffled color: " + randomhex + " - " + colorname)
+            MPP.chat.send("Shuffled color: " + randomhex + " - " + colorname(randomhex))
         }
         if (cmd == "steal") {
-            MPP.client.sendArray([{
-                m: 'userset',
-                set: {
-                    color: MPP.client.ppl[`${args[1]}`].color
-                }
-            }]);
+                MPP.client.sendArray([{
+                    m: 'userset',
+                    set: {
+                        color: MPP.client.ppl[`${searchId(args[1])}`].color
+                    }
+                }]);
         }
         if (cmd == "reset") {
-            MPP.client.sendArray([{
-                m: 'userset',
-                set: {
-                    name: localStorage.resetname,
-                    color: localStorage.resetcolor
-                }
-            }]);
+            if (args.length == 1) {
+                MPP.client.sendArray([{
+                    m: 'userset',
+                    set: {
+                        name: localStorage.resetname,
+                        color: localStorage.resetcolor
+                    }
+                }]);
+            } else if (args[1] == "color") {
+                MPP.client.sendArray([{
+                    m: 'userset',
+                    set: {
+                        color: localStorage.resetcolor
+                    }
+                }]);
+            } else if (args[1] == "name") {
+                MPP.client.sendArray([{
+                    m: 'userset',
+                    set: {
+                        name: localStorage.resetname
+                    }
+                }]);
+            }
         }
         if (cmd == "mycolor") {
-            MPP.chat.send(m.p.color + " - *" + colorname + "*")
+            MPP.chat.send(m.p.color + " - *" + colorname(m.p.color) + "*")
         }
         if (cmd == "settings") {
             console.log(JSON.stringify(MPP.client.channel.settings))
@@ -208,10 +327,13 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "about") {
             if (args.length == 1) {
-                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by ccjt in 2024-2025`)
+                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal - made by ccjt in 2024-2025 - Running version 1.1.4`)
             } else {
-                MPP.chat.send(args[1] + "'s info - Name: " + MPP.client.ppl[args[1]].name + " Color: " + MPP.client.ppl[args[1]].color + " - *" + colorname + "* - Mouse Position: X" + MPP.client.ppl[args[1]].x + ", Y" + MPP.client.ppl[args[1]].y + " - AFK: " + MPP.client.ppl[args[1]].afk + " ||You can use \"steal " + args[1].trim() + "\" to steal their color!||")
+                MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
             }
+        }
+        if (cmd == "playalone") {
+            MPP.client.setChannel("Room" + Math.floor(Math.random() * 1e12))
         }
         if (cmd == "goto") {
             MPP.client.setChannel(m.a.substring(4).trim())
@@ -229,13 +351,25 @@ MPP.client.on('a', function(m) {
             MPP.chat.send("Name set to " + args[1] + ".")
         }
         if (cmd == "color") {
-            MPP.client.sendArray([{
-                m: 'userset',
-                set: {
-                    color: args[1]
-                }
-            }]);
-            MPP.chat.send("Color set to " + args[1] + ".")
+            if (args[1].length == 6) {
+                MPP.client.sendArray([{
+                    m: 'userset',
+                    set: {
+                        color: "#" + args[1]
+                    }
+                }]);
+                MPP.chat.send("Color set to #" + args[1] + ". - *" + colorname("#" + args[1]) + "*")
+            } else if (args[1].length == 7) {
+                MPP.client.sendArray([{
+                    m: 'userset',
+                    set: {
+                        color: args[1]
+                    }
+                }]);
+                MPP.chat.send("Color set to " + args[1] + ". - *" + colorname(args[1]) + "*")
+            } else if (args[1].length > 7) {
+                MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "*")
+            }
         }
     }
 });
