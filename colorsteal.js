@@ -76,6 +76,7 @@ const shitposts = [
 ]
 // "u": "n", derwear haha gottem
 // (^preserve^)
+let mem = 'lobby'
 MPP.client.on('a', function(m) {
     let args = m.a.split(' ');
     let cmd = args[0];
@@ -149,6 +150,40 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("FaveStats - This command shows your favorited statuses.")*/
                     }
                 }
+            }
+        }
+        if (cmd == "kick") {
+            if ("crown" in MPP.client.channel) {
+                if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
+                    if (args.length < 3) {
+                        MPP.chat.send('You need to specify more arguments. Usage: `kick [id] [minutes] [reason]`')
+                    } else {
+                        let mem = MPP.client.channel._id;
+                        MPP.client.sendArray([{"m":"kickban","_id":searchId(args[1]),"ms":parseInt(args[2])*60000}]);
+                        MPP.client.setChannel('test/awkward');
+                        if (args.length == 3) {
+                            MPP.chat.send("You have been kicked from " + mem + " for " + args[2] + " minutes. Reason: `No reason provided`")
+                        } else if (args.length > 3) {
+                            MPP.chat.send("You have been kicked from " + mem + " for " + args[2] + " minutes. Reason: `" + m.a.substring(args[0].length + args[1].length + args[2].length + 3).trim() + "`")
+                        }
+                        MPP.client.setChannel(mem);
+                    }
+                } else {
+                    MPP.chat.send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder. You can try asking for them to kick the person or asking for the crown (if this room was yours).')
+                }
+            } else {
+                MPP.chat.send("You can't kick someone in a lobby room.")
+            }
+        }
+        if (cmd == "chown") {
+            if ("crown" in MPP.client.channel) {
+                if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
+                    MPP.chat.send("You are the crown holder.")
+                } else {
+                    MPP.chat.send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder.')
+                }
+            } else {
+                MPP.chat.send("There is no crown holder.")
             }
         }
         if (cmd == "merge") {
@@ -264,12 +299,13 @@ MPP.client.on('a', function(m) {
             MPP.chat.send("Shuffled color: " + randomhex + " - " + colorname(randomhex))
         }
         if (cmd == "steal") {
-                MPP.client.sendArray([{
-                    m: 'userset',
-                    set: {
-                        color: MPP.client.ppl[`${searchId(args[1])}`].color
-                    }
-                }]);
+            MPP.client.sendArray([{
+                m: 'userset',
+                set: {
+                    color: MPP.client.ppl[`${searchId(args[1])}`].color
+                }
+            }]);
+            MPP.chat.send('Stolen from ' + MPP.client.ppl[searchId(args[1])].name + " (" + searchId(args[1]).substring(0,6) + ") successfully.")
         }
         if (cmd == "reset") {
             if (args.length == 1) {
@@ -334,6 +370,10 @@ MPP.client.on('a', function(m) {
                 }
             }
         }
+        if (cmd == "refresh") {
+            MPP.chat.send("Refreshing...")
+            location.replace(location.href)
+        }
         if (cmd == "about") {
             if (args.length == 1) {
                 MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://github.com/ccjit/colorsteal/blob/main/colorsteal.js - made by ccjt in 2024-2025 - Running version 1.1.5`)
@@ -357,7 +397,7 @@ MPP.client.on('a', function(m) {
                     name: m.a.substring(4).trim()
                 }
             }]);
-            MPP.chat.send("Name set to " + args[1] + ".")
+            MPP.chat.send("Name set to \"" + m.a.substring(4).trim() + "\".")
         }
         if (cmd == "color") {
             if (args[1].length == 6) {
