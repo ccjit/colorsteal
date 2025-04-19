@@ -1,21 +1,22 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.6
+// @version      1.1.7
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
 // @match        https://multiplayerpiano.net/*
 // @match        https://multiplayerpiano.dev/*
 // @match        https://mpp.8448.space/*
+// @license       MIT
 // @icon         data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAAAXNSR0IArs4c6QAAAnpJREFUeF7tmlFShDAMhrfjDdRX9XLO6JH0ePqsZ8AJM2FiJ23DJiTAxhdZKIV8Tf4kQJmmabrc8F9JAOkBGQKpATesgZcUwcwCnSxQSmGj40yJoxkCYPyZDG3p3KYAjgAxAbRE0GL1LObYOkWrPaAWSqobNQDJWBzjpT8qANwK032tbVzV+jjs9zJ8uQdNCFgD8DYeIOzKAxJAQGPa7QUklaBE2GjMU1XvCebW6j/UAK8biL5OdoOR3SAXYt5CGOYBEVUim7ajPCABBLTbh/QAS0/ZFYC5DGWeONW1AaZJ3N+rO7g5R7VGmAg2n9BUobG2oaqzyPB8rQj+fn4Pa5mHt+fhGK5DxBVtrT7nHa4AJMbjTUohcM8QKIBenbCmO1WXwmg8GAbb+L+31BIIhwMABnPGc2BqACMRrENgrXCKQuRaDaDuTwG0thGUWAycBqqywBYa4GT3chkVAJhFAuHx/eWfXd4NTw+qGoBkxUbFi2SOrca4A4DVtyxvtWBcAfx8fM33C0K5FwguAGiVtzcIrgAwjyME+A0CGSmKIQDAcIQAACiQUUxLqsnRHPS4OwBMnZga1xi/tq+QgHAHIKkbRjde7srl/vVpNEx0PBwAunTdXLV6DGsvCAUwaqLQWM5rrLRgtwBO6wF1/0BDoPaI1jMGq9Wf0/K17bBIYTqDrhVDS+NDAWgBWp0f5gFWBmjnSQBRGqBdOavz0wPSAyJ7USs/VsyTIZAhkCHQ/jqx9bIRQu4s3LqfytaGjt61K7Qo7FQWABqqeVMbZtHKC88AJAbPnRP5emMvz/Wl9nKf5i/d4C0BqG1dQqD3dQVH70giiO8m6Ws5tOkPIuP6YibZoUkAAAAASUVORK5CYII=
 // @grant        none
 // ==/UserScript==
 if (localStorage.resetname == undefined) {
-    localStorage.setItem('resetname', "꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂") // you can change this using "define reset name [name]"
+    localStorage.setItem('resetname', MPP.client.getOwnParticipant().name)
 }
 if (localStorage.resetcolor == undefined) {
-    localStorage.setItem('resetcolor', "#b3acf1") // you can change this using "define reset color [color]"
+    localStorage.setItem('resetcolor', MPP.client.getOwnParticipant().color)
 }
 /*
 function countAllIdsFound(query) {
@@ -142,9 +143,68 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
+let version = '1.1.7'
+function checkVersion() {
+    fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
+        if (version != json.latest) {
+            setInterval(function() {
+                MPP.chat.receive({
+                    "m": "a",
+                    "t": Date.now(),
+                    "a": "Please update colcrsteal! Current version: " + version + " - Latest version: " + json.latest + " - Update your script at https://greasyfork.org/en/scripts/533170-colorsteal and use \"refresh\" to refresh your page to apply the script.",
+                    "p": {
+                        "_id": "colors",
+                        "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                        "color": "#b3acf1",
+                        "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                    }
+                });
+            }, 60000);
+        }
+    }));
+}
+MPP.client.on('hi', function () {
+    if (localStorage.hasUsedColorstealBefore == undefined) {
+        setTimeout(function(){MPP.chat.receive({
+            "m": "a",
+            "t": Date.now(),
+            "a": "Thanks for using colorsteal! To get a list of commands you can try after installing this bot, use `help`. You don't need to provide any information for this bot, the needed info has already been stored.",
+            "p": {
+                "_id": "colors",
+                "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                "color": "#b3acf1",
+                "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+            }
+        });
+        MPP.chat.receive({
+            "m": "a",
+            "t": Date.now(),
+            "a": "You can for example, steal the color from,,, let me pick,, uhh... you can steal the color from " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].name + " by using `steal " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]]._id.substring(0,6) + "`! ─ You can also set your color to a random one with `shuffle`, and if you like it, favorite it using `fave`!",
+            "p": {
+                "_id": "colors",
+                "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                "color": "#b3acf1",
+                "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+            }
+        });
+        MPP.chat.receive({
+            "m": "a",
+            "t": Date.now(),
+            'a': "Don't worry! Only you can see these messages, and this won't happen again. Have fun using my bot! <3",
+            "p": {
+                "_id": "colors",
+                "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                "color": "#b3acf1",
+                "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+            }
+        });
+        localStorage.setItem('hasUsedColorstealBefore', true)}, 5000)
+    }
+});
 MPP.client.on('a', function(m) {
     let args = m.a.split(' ');
     let cmd = args[0];
+    let randroom = "Room" + Math.floor(Math.random() * 1e12)
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
     let colorname = function(hex) { if (new Color(hex).getName().length > 10) { return new Color(hex).getName().substring(10).trim() } else { return new Color(hex).getName() } }
     let shitpost = shitposts[Math.floor(Math.random()*shitposts.length)]
@@ -472,16 +532,29 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "about") {
             if (args.length == 1) {
-                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version 1.1.6`)
+                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version 1.1.7`)
             } else {
                 MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
             }
         }
         if (cmd == "playalone") {
-            MPP.client.setChannel("Room" + Math.floor(Math.random() * 1e12))
+            MPP.client.setChannel(randroom)
+            window.history.replaceState(null, "", location.href.split('/?c=')[0] + "/?c=" + randroom)
+            MPP.client.sendArray([{
+                'm': "chset",
+                "set": {
+                    "visible": false,
+                    "color":"#220022",
+                    "color2":"#000022"
+                }
+            }]);
+            MPP.chat.send("**Playing alone**")
+            MPP.chat.send("────────────────")
+            MPP.chat.send("You are playing alone in a room by yourself, but you can always invite friends by sending them the link. " + location.href)
         }
         if (cmd == "goto") {
             MPP.client.setChannel(m.a.substring(4).trim())
+            window.history.replaceState(null, "", location.href.split('/?c=')[0] + "/?c=" + m.a.substring(4).trim())
         }
         if (cmd == "whereami") {
             MPP.chat.send("You're in the room \"" + MPP.client.channel._id + "\".")
@@ -518,3 +591,4 @@ MPP.client.on('a', function(m) {
         }
     }
 });
+setInterval(checkVersion(), 60000)
