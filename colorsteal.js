@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.9
+// @version      1.1.9.5
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -173,7 +173,7 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.1.9'
+let version = '1.1.9.5'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (version != json.latest) {
@@ -190,6 +190,35 @@ function checkVersion() {
                     }
                 });
             }, 60000);
+        }
+    }));
+}
+function checkVersionManual() {
+    fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
+        if (version != json.latest) {
+            MPP.chat.receive({
+                "m": "a",
+                "t": Date.now(),
+                "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Click this link > https://update.greasyfork.org/scripts/533170/colorsteal.user.js < this link and use \"refresh\" to refresh your page to apply the script. - `Changelog: " + json.update.description + "`",
+                "p": {
+                    "_id": "colors",
+                    "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                    "color": "#ff4747",
+                    "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                }
+            });
+        } else {
+            MPP.chat.receive({
+                "m": "a",
+                "t": Date.now(),
+                "a": "You're up to date! Current version: " + version + " - Latest version: " + json.latest + " - `Changelog for your version: " + json.update.description + "`",
+                "p": {
+                    "_id": "colors",
+                    "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                    "color": "#ff4747",
+                    "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                }
+            });
         }
     }));
 }
@@ -284,6 +313,9 @@ MPP.client.on('a', function(m) {
         MPP.chat.send("Counter: " + localStorage.counter)
     }
     if (m.p.id == MPP.client.participantId) {
+        if (cmd == "checkversion") {
+            checkVersionManual()
+        }
         if (cmd == "help") {
             if (args.length == 1) {
                 if ("crown" in MPP.client.channel) {
@@ -295,7 +327,7 @@ MPP.client.on('a', function(m) {
                 }
             } else if (args.length == 2) {
                 if ("crown" in MPP.client.channel) {
-                    if (MPP.cient.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
+                    if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
                         if (args[1] == 'crown') {
                             MPP.chat.send("Commands: kick - kicks an user")
                         }
@@ -304,7 +336,7 @@ MPP.client.on('a', function(m) {
                 if (args[1] == "userset") {
                     MPP.chat.send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
                 } else if (args[1] == "info") {
-                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name. | chown - tells you who is holding crown")
+                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name. | chown - tells you who is holding crown | checkversion - checks your version")
                 } else if (args[1] == "fun") {
                     MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide | 8ball - shakes an 8 ball")
                 } else if (args[1] == "other") {
@@ -362,6 +394,8 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("Rate - This command tells you how associated you are with a certain topic.")
                     } else if (args[2] == "8ball") {
                         MPP.chat.send("8 Ball - Shakes an 8 Ball to answer your question.")
+                    } else if (args[2] == "checkversion") {
+                        MPP.chat.send("CheckVersion - Checks if there are any new updates.")
                     } /*else if (args[2] == "settings") {
                         MPP.chat.send("Settings - This command logs the current room settings in your DevTools console. You can access it by pressing F12, CTRL+Shift+J or CTRL+Shift+I and clicking on `Console`.")
                     } else if (args[2] == "favestat") {
