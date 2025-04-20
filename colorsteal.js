@@ -181,7 +181,7 @@ function checkVersion() {
                 MPP.chat.receive({
                     "m": "a",
                     "t": Date.now(),
-                    "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Update your script at https://greasyfork.org/en/scripts/533170-colorsteal or use and use \"refresh\" to refresh your page to apply the script.",
+                    "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Click this link > https://update.greasyfork.org/scripts/533170/colorsteal.user.js < this link and use \"refresh\" to refresh your page to apply the script. - `Changelog: " + json.update.description + "`",
                     "p": {
                         "_id": "colors",
                         "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
