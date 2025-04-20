@@ -215,7 +215,7 @@ function checkVersionManual() {
                 "p": {
                     "_id": "colors",
                     "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                    "color": "#ff4747",
+                    "color": "#6dee49",
                     "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
                 }
             });
