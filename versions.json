@@ -1,6 +1,7 @@
 {
-  "latest": "1.1.8",
+  "latest": "1.1.8.5",
   "previous": {
+    "1.1.8",
     "1.1.7"
   },
   "unsupported": {
@@ -8,5 +9,8 @@
     "1.1.5",
     "1.1",
     "1.0"
+  },
+  "update": {
+    "description": "added `add` command and added update description functionality"
   }
 }
