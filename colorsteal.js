@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.9.5
+// @version      1.1.9.75
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -59,8 +59,8 @@ function findIdByName(name) {
         if (!found) {
             console.log("name not found, maybe the user doesn't exist. returning own _id")
             return {
-                id: MPP.client.getOwnParticipant()._id,
-                name: MPP.client.getOwnParticipant().name
+                id: "undefined",
+                name: "[USER NOT FOUND]"
             }
         }
     }
@@ -135,7 +135,7 @@ let operations = [
 ]
 /* fix later
 function mathGame() {
-    MPP.chat.send("Get ready to do some math in 5 seconds!")
+    send("Get ready to do some math in 5 seconds!")
     let x = Math.floor(Math.random() * 25)
     let y = Math.floor(Math.random() * 25)
     let op = Math.floor(Math.random() * operations.length)
@@ -143,7 +143,7 @@ function mathGame() {
     let starttime = 0
     setTimeout(function () {
         let starttime = Date.now()
-        MPP.chat.send("Solve 〈 " + x + " " + op + " " + y + " 〉 as fast as you can!")
+        send("Solve 〈 " + x + " " + op + " " + y + " 〉 as fast as you can!")
     }, 5000)
     while (true) {
         let currtime = Date.now
@@ -155,7 +155,7 @@ function mathGame() {
             }
         });
         if (localStorage.won == true) {
-            MPP.chat.send('')
+            send('')
         }
     }
 }*/
@@ -173,23 +173,21 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.1.9.5'
+let version = '1.1.9.75'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (version != json.latest) {
-            setInterval(function() {
-                MPP.chat.receive({
-                    "m": "a",
-                    "t": Date.now(),
-                    "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Click this link > https://update.greasyfork.org/scripts/533170/colorsteal.user.js < this link and use \"refresh\" to refresh your page to apply the script. - `Changelog: " + json.update.description + "`",
-                    "p": {
-                        "_id": "colors",
-                        "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                        "color": "#ff4747",
-                        "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
-                    }
-                });
-            }, 60000);
+            setInterval(MPP.chat.receive({
+                "m": "a",
+                "t": Date.now(),
+                "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Click this link > https://update.greasyfork.org/scripts/533170/colorsteal.user.js < this link and use \"refresh\" to refresh your page to apply the script. - `Changelog: " + json.update.description + "`",
+                "p": {
+                    "_id": "colors",
+                    "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                    "color": "#ff4747",
+                    "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                }
+            }), 120*1000)
         }
     }));
 }
@@ -298,7 +296,9 @@ if (localStorage.counter == undefined) {
 }
 MPP.client.on('a', function(m) {
     let args = m.a.split(' ');
-    let cmd = args[0];
+    let cmd = args[0].toLowerCase();
+    let crowned = ('crown' in MPP.client.channel && MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id)
+    let send = function(m) {MPP.chat.send(m)}
     let randroom = "Room" + Math.floor(Math.random() * 1e12)
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
     let colorname = function(hex) { if (new Color(hex).getName().length > 10) { return new Color(hex).getName().substring(10).trim() } else { return new Color(hex).getName() } }
@@ -310,7 +310,7 @@ MPP.client.on('a', function(m) {
     }
     if (cmd == "add") {
         localStorage.setItem('counter', parseInt(localStorage.counter) + 1)
-        MPP.chat.send("Counter: " + localStorage.counter)
+        send("Counter: " + localStorage.counter)
     }
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "checkversion") {
@@ -318,111 +318,90 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "help") {
             if (args.length == 1) {
-                if ("crown" in MPP.client.channel) {
-                    if (MPP.cient.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
-                        MPP.chat.send("Please choose a category: userset, info, fun, crown, other - or use `help usage [command name]` to get the usage of a command")
-                    } else {
-                        MPP.chat.send("Please choose a category: userset, info, fun, other - or use `help usage [command name]` to get the usage of a command")
-                    }
-                }
+                send("Please choose a category: userset, info, fun, other") // or use `help usage [command name]` to get the usage of a command - but thst doesn't actually work
             } else if (args.length == 2) {
-                if ("crown" in MPP.client.channel) {
-                    if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
-                        if (args[1] == 'crown') {
-                            MPP.chat.send("Commands: kick - kicks an user")
-                        }
-                    }
-                }
                 if (args[1] == "userset") {
-                    MPP.chat.send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
+                    send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
                 } else if (args[1] == "info") {
-                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name. | chown - tells you who is holding crown | checkversion - checks your version")
+                    send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands | define - defines a variable | whereami - tells you the room name | chown - tells you who is holding crown | checkversion - checks your version")
                 } else if (args[1] == "fun") {
-                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide | 8ball - shakes an 8 ball")
+                    send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide | 8ball - shakes an 8 ball")
                 } else if (args[1] == "other") {
-                    MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items | mention - mentions an user")
-                } else if (args[1] == "usage") {
+                    send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items | mention - mentions a user | kick - kicks a user if holding crown")
+                } /*else if (args[1] == "usage") { fix when you can, you dummy
                     if (args.length == 2) {
-                        MPP.chat.send("Please specify a command to know about. Example: help usage steal")
+                        send("Please specify a command to know about. Example: help usage steal")
                     } else if (args[2] == "steal") {
-                        MPP.chat.send("Steal - This command takes the color from the ID or name you specify and sets your color to it. - Example: steal [ID or name]")
+                        send("Steal - This command takes the color from the ID or name you specify and sets your color to it. - Example: steal [ID or name]")
                     } else if (args[2] == "color") {
-                        MPP.chat.send("Color - This command sets your color to the hex code you specify, or tells the color of the specified ID or name. - Example 1: color #bababa - This example command sets your color to Baby Talk Grey. - This command can also get the color from a desired ID or name.")
+                        send("Color - This command sets your color to the hex code you specify, or tells the color of the specified ID or name. - Example 1: color #bababa - This example command sets your color to Baby Talk Grey. - This command can also get the color from a desired ID or name.")
                     } else if (args[2] == "name") {
-                        MPP.chat.send("Name - This command sets your name to the text you specify. - Example: name Anonymous is using colorsteal - This example command sets your name to \"Anonymous is using colorsteal\".")
+                        send("Name - This command sets your name to the text you specify. - Example: name Anonymous is using colorsteal - This example command sets your name to \"Anonymous is using colorsteal\".")
                     } else if (args[2] == "shuffle") {
-                        MPP.chat.send("Shuffle - This command sets your color to a completely random color. - Example: shuffle - This example sets your color to a random color that you've probably never seen before.")
+                        send("Shuffle - This command sets your color to a completely random color. - Example: shuffle - This example sets your color to a random color that you've probably never seen before.")
                     } else if (args[2] == "reset") {
-                        MPP.chat.send("Reset - This command resets your name and color to your default name and color, and can also reset your name or your color independently, by using \"reset name\" and \"reset color\" respectively. You can change your reset name and color by doing \"define reset name [name]\" and \"define reset color [hex code]\" respectively. - Example: reset")
+                        send("Reset - This command resets your name and color to your default name and color, and can also reset your name or your color independently, by using \"reset name\" and \"reset color\" respectively. You can change your reset name and color by doing \"define reset name [name]\" and \"define reset color [hex code]\" respectively. - Example: reset")
                     } else if (args[2] == "mycolor") {
-                        MPP.chat.send("MyColor - This command tells you your current color in hex. - Example: mycolor - This example command tells you your current color.")
+                        send("MyColor - This command tells you your current color in hex. - Example: mycolor - This example command tells you your current color.")
                     } else if (args[2] == "about") {
-                        MPP.chat.send("About - This command tells you bot info when no ID or name is provided, but if you specify an ID, it will tell you the info about that user. - Example 1: about ; This example sends a message with bot info. - Example 2: about [ID or name] ; This example sends a message with the info about the specified ID or name.")
+                        send("About - This command tells you bot info when no ID or name is provided, but if you specify an ID, it will tell you the info about that user. - Example 1: about ; This example sends a message with bot info. - Example 2: about [ID or name] ; This example sends a message with the info about the specified ID or name.")
                     } else if (args[2] == "help") {
-                        MPP.chat.send("Help - This command displays the list of commands in a category, or tells you the usage of a command. - Example 1: help info ; This example shows the commands in the \"info\" category. - Example 2: help usage steal ; This command shows the usage of the \"steal\" command.")
+                        send("Help - This command displays the list of commands in a category, or tells you the usage of a command. - Example 1: help info ; This example shows the commands in the \"info\" category. - Example 2: help usage steal ; This command shows the usage of the \"steal\" command.")
                     } else if (args[2] == "define") {
-                        MPP.chat.send("Define - This command defines a variable. - Example: define reset name Anonymous | This example command sets your reset name to Anonymous, so that when you use the \"reset\" command, your name is set to \"Anonymous\".")
+                        send("Define - This command defines a variable. - Example: define reset name Anonymous | This example command sets your reset name to Anonymous, so that when you use the \"reset\" command, your name is set to \"Anonymous\".")
                     } else if (args[2] == "whereami") {
-                        MPP.chat.send("WhereAmI - This command says your current room name. - Example: whereami - This example command says that \"You're in the room \"" + MPP.client.channel._id + "\".\"")
+                        send("WhereAmI - This command says your current room name. - Example: whereami - This example command says that \"You're in the room \"" + MPP.client.channel._id + "\".\"")
                     } else if (args[2] == "stat") {
-                        MPP.chat.send("Stat - This command adds a status at the end of your name. - Example: stat AFK - This example command sets your name to \"" + m.p.name + " [AFK]\".")
+                        send("Stat - This command adds a status at the end of your name. - Example: stat AFK - This example command sets your name to \"" + m.p.name + " [AFK]\".")
                     } else if (args[2] == "flip") {
-                        MPP.chat.send("Flip - This command has a 69% chance of saying \"*flips*\", and a 31% chance of saying \"*fails*\".")
+                        send("Flip - This command has a 69% chance of saying \"*flips*\", and a 31% chance of saying \"*fails*\".")
                     } else if (args[2] == "fave") {
-                        MPP.chat.send("Fave - This command favorites an item. - Example: fave #bababa - baby gray - This example command favorites the string \"#bababa - baby gray\". You can check your favorited items with \"faves\".")
+                        send("Fave - This command favorites an item. - Example: fave #bababa - baby gray - This example command favorites the string \"#bababa - baby gray\". You can check your favorited items with \"faves\".")
                     } else if (args[2] == "faves") {
-                        MPP.chat.send("Faves - This command tells you your favorited items.")
+                        send("Faves - This command tells you your favorited items.")
                     } else if (args[2] == "wipefaves") {
-                        MPP.chat.send("WipeFaves - This command erases all your favorited items permanently, with no way to bring them back.")
+                        send("WipeFaves - This command erases all your favorited items permanently, with no way to bring them back.")
                     } else if (args[2] == "shitpost") {
-                        MPP.chat.send("Shitpost - This command sends a link to a random Sushi Monsters shitpost.")
+                        send("Shitpost - This command sends a link to a random Sushi Monsters shitpost.")
                     } else if (args[2] == "ppl") {
-                        MPP.chat.send("PPL - This command sends a list of all IDs. You can get info about those IDs using \"about [ID]\".")
+                        send("PPL - This command sends a list of all IDs. You can get info about those IDs using \"about [ID]\".")
                     } else if (args[2] == "merge") {
-                        MPP.chat.send("Merge - This command merges 2 hex colors. - Example: merge #000000 ffffff. - This example command merges the colors black (000000) and white (#ffffff) which gives #808080 (gray)")
+                        send("Merge - This command merges 2 hex colors. - Example: merge #000000 ffffff. - This example command merges the colors black (000000) and white (#ffffff) which gives #808080 (gray)")
                     } else if (args[2] == "mergeid") {
-                        MPP.chat.send("MergeID - This command merges 2 colors from 2 IDs.")
+                        send("MergeID - This command merges 2 colors from 2 IDs.")
                     } else if (args[2] == "playalone") {
-                        MPP.chat.send("PlayAlone - This command sends you to a Play Alone room.")
+                        send("PlayAlone - This command sends you to a Play Alone room.")
                     } else if (args[2] == "mention") {
-                        MPP.chat.send("Mention - This command mentions the user with the name/ID you provided.")
+                        send("Mention - This command mentions the user with the name/ID you provided.")
                     } else if (args[2] == "chown") {
-                        MPP.chat.send("ChOwn - This command sends the user ID of the person holding the crown.")
+                        send("ChOwn - This command sends the user ID of the person holding the crown.")
                     } else if (args[2] == "kick") {
-                        MPP.chat.send("Kick - This command kicks the user with the ID or name of the person you provide. If the user isn't found, you kick yourself instead.")
+                        send("Kick - This command kicks the user with the ID or name of the person you provide. If the user isn't found, you kick yourself instead.")
                     } else if (args[2] == "rate") {
-                        MPP.chat.send("Rate - This command tells you how associated you are with a certain topic.")
+                        send("Rate - This command tells you how associated you are with a certain topic.")
                     } else if (args[2] == "8ball") {
-                        MPP.chat.send("8 Ball - Shakes an 8 Ball to answer your question.")
+                        send("8 Ball - Shakes an 8 Ball to answer your question.")
                     } else if (args[2] == "checkversion") {
-                        MPP.chat.send("CheckVersion - Checks if there are any new updates.")
-                    } /*else if (args[2] == "settings") {
-                        MPP.chat.send("Settings - This command logs the current room settings in your DevTools console. You can access it by pressing F12, CTRL+Shift+J or CTRL+Shift+I and clicking on `Console`.")
-                    } else if (args[2] == "favestat") {
-                        MPP.chat.send("FaveStat - This command favorites a status. This command is prone to deletion because you can also use the \"fave\" command for the same effect.")
-                    } else if (args[2] == "wipestats") {
-                        MPP.chat.send("WipeStats - This command wipes all of your favorited statuses, with no way to recover them.")
-                    } else if (args[2] == "favestats") {
-                        MPP.chat.send("FaveStats - This command shows your favorited statuses.")
-                    }*/
-                }
+                        send("CheckVersion - Checks if there are any new updates.")
+                    }
+                }*/
             }
         }
         /* cursed code
         if (cmd == 'get') {
             if (args.length == 1) {
-                MPP.chat.send('Please specify a category to get something from. Categories: random')
+                send('Please specify a category to get something from. Categories: random')
             } else if (args.length == 2) {
                 if (args[1] == "random") {
                     if (args.length == 2) {
-                        MPP.chat.send('Please specify a thing to get from this category: Items: person, number')
+                        send('Please specify a thing to get from this category: Items: person, number')
                     }
                 }
             } else if (args[1] == "random")
                 if (args[2] == "person") {
-                    MPP.chat.send(MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].name)
+                    send(MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].name)
                 } else if (args[2] == "number") {
-                    MPP.chat.send("Random number (0 to 100): " + Math.floor(Math.random()*100))
+                    send("Random number (0 to 100): " + Math.floor(Math.random()*100))
                 }
             }
         }*/
@@ -430,116 +409,116 @@ MPP.client.on('a', function(m) {
             if ("crown" in MPP.client.channel) {
                 if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
                     if (args.length < 3) {
-                        MPP.chat.send('You need to specify more arguments. Usage: `kick [id] [minutes] [reason]`')
+                        send('You need to specify more arguments. Usage: `kick [id] [minutes] [reason]`')
                     } else {
                         let mem = MPP.client.channel._id;
                         MPP.client.sendArray([{"m":"kickban","_id":searchId(args[1]),"ms":parseInt(args[2])*60000}]);
                         MPP.client.setChannel('test/awkward');
                         if (args.length == 3) {
-                            MPP.chat.send("You have been kicked from " + mem + " for " + args[2] + " minutes. Reason: `No reason provided`")
+                            send("You have been kicked from " + mem + " for " + args[2] + " minutes. Reason: `No reason provided`")
                         } else if (args.length > 3) {
-                            MPP.chat.send("You have been kicked from " + mem + " for " + args[2] + " minutes. Reason: `" + m.a.substring(args[0].length + args[1].length + args[2].length + 3).trim() + "`")
+                            send("You have been kicked from " + mem + " for " + args[2] + " minutes. Reason: `" + m.a.substring(args[0].length + args[1].length + args[2].length + 3).trim() + "`")
                         }
                         MPP.client.setChannel(mem);
                     }
                 } else {
-                    MPP.chat.send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder. You can try asking for them to kick the person or asking for the crown (if this room was yours).')
+                    send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder. You can try asking for them to kick the person or asking for the crown (if this room was yours).')
                 }
             } else {
-                MPP.chat.send("You can't kick someone in a lobby room.")
+                send("You can't kick someone in a lobby room.")
             }
         }
         if (cmd == "chown") {
             if ("crown" in MPP.client.channel) {
                 if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
-                    MPP.chat.send("You are the crown holder.")
+                    send("You are the crown holder.")
                 } else {
-                    MPP.chat.send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder.')
+                    send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder.')
                 }
             } else {
-                MPP.chat.send("There is no crown holder.")
+                send("There is no crown holder.")
             }
         }
         if (cmd == "rate") {
             if (args.length == 1) {
-                MPP.chat.send("You are 100% sending an empty topic to this command.")
+                send("You are 100% sending an empty topic to this command.")
             } else {
-                MPP.chat.send(`You are ${Math.floor(Math.random()*100)}% ${m.a.substring(4).trim()}.`)
+                send(`You are ${Math.floor(Math.random()*100)}% ${m.a.substring(4).trim()}.`)
             }
         }
         if (cmd == "merge") {
             if (args.length < 3) {
-                MPP.chat.send("Please specify 2 hex colors to merge. If you want to merge the colors of 2 IDs, use \"mergeid\".")
+                send("Please specify 2 hex colors to merge. If you want to merge the colors of 2 IDs, use \"mergeid\".")
             } else if (args[1].includes('#')) {
                 if (args[2].includes('#')) {
-                    MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors(args[1], args[2], 0.5))
+                    send(args[1] + " + " + args[2] + " = " + blendColors(args[1], args[2], 0.5))
                 } else {
-                    MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors(args[1], "#" + args[2], 0.5))
+                    send(args[1] + " + " + args[2] + " = " + blendColors(args[1], "#" + args[2], 0.5))
                 }
             } else if (args[2].includes('#')) {
-                MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors("#" + args[1], args[2], 0.5))
+                send(args[1] + " + " + args[2] + " = " + blendColors("#" + args[1], args[2], 0.5))
             } else {
-                MPP.chat.send(args[1] + " + " + args[2] + " = " + blendColors('#' + args[1], "#" + args[2], 0.5))
+                send(args[1] + " + " + args[2] + " = " + blendColors('#' + args[1], "#" + args[2], 0.5))
             }
          }
         if (cmd == "ppl") {
-            MPP.chat.send(Object.values(MPP.client.ppl).length + ": " + getPplIds().ids)
-            MPP.chat.send(Object.values(MPP.client.ppl).length + ": " + getPplIds().names)
+            send(Object.values(MPP.client.ppl).length + ": " + getPplIds().ids)
+            send(Object.values(MPP.client.ppl).length + ": " + getPplIds().names)
         }
         if (cmd == "mergeid") {
             if (args.length < 3) {
-                MPP.chat.send("Please specify 2 IDs to merge colors from. If you want to merge 2 hex colors, use \"merge\".")
+                send("Please specify 2 IDs to merge colors from. If you want to merge 2 hex colors, use \"merge\".")
             } else {
-                MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + " (" + MPP.client.ppl[searchId(args[1])].color + ") + " + MPP.client.ppl[searchId(args[2])].name + " (" + MPP.client.ppl[searchId(args[2])].color + ") = " + blendColors(MPP.client.ppl[searchId(args[1])].color, MPP.client.ppl[searchId(args[2])].color, 0.5))
+                send(MPP.client.ppl[searchId(args[1])].name + " (" + MPP.client.ppl[searchId(args[1])].color + ") + " + MPP.client.ppl[searchId(args[2])].name + " (" + MPP.client.ppl[searchId(args[2])].color + ") = " + blendColors(MPP.client.ppl[searchId(args[1])].color, MPP.client.ppl[searchId(args[2])].color, 0.5))
             }
         }
         if (cmd == 'shitpost') {
-            MPP.chat.send(shitpost)
+            send(shitpost)
         }
         if (cmd == "fave") {
             if (args.length == 1) {
                 if (localStorage.fave == undefined) {
                     localStorage.setItem("fave", " color: " + m.p.color + " - name: " + m.p.name)
-                    MPP.chat.send('faved!')
+                    send('faved!')
                 } else {
                     localStorage.setItem("fave", localStorage.fave + ", color: " + m.p.color + " - name: " + m.p.name)
-                    MPP.chat.send('faved!')
+                    send('faved!')
                 }
             } else {
                 if (localStorage.fave == undefined) {
                     localStorage.setItem("fave", m.a.substring(4).trim())
-                    MPP.chat.send("faved!")
+                    send("faved!")
                 } else {
                     localStorage.setItem("fave", localStorage.fave + ", " + m.a.substring(4).trim())
-                    MPP.chat.send("faved!")
+                    send("faved!")
                 }
             }
         }
         if (cmd == "faves") {
             if (localStorage.fave == undefined) {
-                MPP.chat.send("you have no faves! (maybe you wiped your faves..?)")
+                send("you have no faves! (maybe you wiped your faves..?)")
             } else {
-                MPP.chat.send(localStorage.fave)
+                send(localStorage.fave)
             }
         }
         if (cmd == "wipefaves") {
             if (args.length == 1) {
-                MPP.chat.send("ARE YOU SURE? [y/n]")
+                send("ARE YOU SURE? [y/n]")
             } else {
                 if (args[1] == "y") {
-                    MPP.chat.send("wiped!")
+                    send("wiped!")
                     localStorage.removeItem('fave')
                 } else {
-                    if (args[1] == "n") { MPP.chat.send("ok!") }
+                    if (args[1] == "n") { send("ok!") }
                 }
             }
         }
         if (cmd == "stat") {
             if (m.a.substring(4).trim().length + m.p.name.length + 2 > 40) {
-                MPP.chat.send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name.length + 3) + " - maximum name length: 40)")
+                send("stat too long!! (final name length: " + (m.a.substring(4).trim().length + m.p.name.length + 3) + " - maximum name length: 40)")
             } else {
-                MPP.chat.send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
-                MPP.chat.send("set!")
+                send("name " + m.p.name + " [" + m.a.substring(4).trim() + "]")
+                send("set!")
             }
         }
         /*
@@ -552,9 +531,9 @@ MPP.client.on('a', function(m) {
                 }
             }]);
             if (MPP.client.ppl[MPP.client.getOwnParticipant()._id].color == randomhex) {
-                MPP.chat.send("your userset quota has been met, you'll have to wait through 12 minutes at maximum.")
+                send("your userset quota has been met, you'll have to wait through 12 minutes at maximum.")
             } else {
-                MPP.chat.send("your userset quota hasn't been met yet")
+                send("your userset quota hasn't been met yet")
             }
             MPP.client.sendArray([{
                 m: 'userset',
@@ -565,9 +544,9 @@ MPP.client.on('a', function(m) {
         }*/
         if (cmd == "flip") {
             if (Math.random() < (69/100)) {
-                MPP.chat.send("\*flips*")
+                send("\*flips*")
             } else {
-                MPP.chat.send("\*fails*")
+                send("\*fails*")
             }
         }
         if (cmd == "shuffle") {
@@ -577,13 +556,13 @@ MPP.client.on('a', function(m) {
                     color: randomhex
                 }
             }]);
-            MPP.chat.send("Shuffled color: " + randomhex + " - " + colorname(randomhex))
+            send("Shuffled color: " + randomhex + " - " + colorname(randomhex))
         }
         if (cmd == "8ball") {
             if (args.length == 1) {
-                MPP.chat.send(noargsball[Math.floor(Math.random()*noargsball.length)])
+                send(noargsball[Math.floor(Math.random()*noargsball.length)])
             } else {
-                MPP.chat.send(ball[Math.floor(Math.random()*ball.length)])
+                send(ball[Math.floor(Math.random()*ball.length)])
             }
         }
         if (cmd == "steal") {
@@ -593,7 +572,7 @@ MPP.client.on('a', function(m) {
                     color: MPP.client.ppl[`${searchId(args[1])}`].color
                 }
             }]);
-            MPP.chat.send('Stolen from ' + MPP.client.ppl[searchId(args[1])].name + " (" + searchId(args[1]).substring(0,6) + ") successfully.")
+            send('Stolen from ' + MPP.client.ppl[searchId(args[1])].name + " (" + searchId(args[1]).substring(0,6) + ") successfully.")
         }
         if (cmd == "reset") {
             if (args.length == 1) {
@@ -621,59 +600,59 @@ MPP.client.on('a', function(m) {
             }
         }
         if (cmd == "mycolor") {
-            MPP.chat.send(m.p.color + " - *" + colorname(m.p.color) + "*")
+            send(m.p.color + " - *" + colorname(m.p.color) + "*")
         }
         if (cmd == "settings") {
             console.log(JSON.stringify(MPP.client.channel.settings))
         }
         if (cmd == "define") {
             if (args.length == 1) {
-                MPP.chat.send("Please insert a category to define. Categories: reset, help - or get a variable with \"get\"")
+                send("Please insert a category to define. Categories: reset, help - or get a variable with \"get\"")
             } else {
                 if (args[1] == "reset") {
                     if (args.length == 2) {
-                        MPP.chat.send("Please insert a variable to define. Variables: name, color - or reset to defaults with \"default\"")
+                        send("Please insert a variable to define. Variables: name, color - or reset to defaults with \"default\"")
                     } else {
                         if (args[2] == "name") {
                             localStorage.setItem("resetname", m.a.substring(17).trim())
-                            MPP.chat.send("Your reset name is now " + localStorage.resetname + ".")
+                            send("Your reset name is now " + localStorage.resetname + ".")
                         } else if (args[2] == "color") {
                             localStorage.setItem("resetcolor", m.a.substring(18).trim())
-                            MPP.chat.send("Your reset color is now " + localStorage.resetcolor + ".")
+                            send("Your reset color is now " + localStorage.resetcolor + ".")
                         } else if (args[2] == "default") {
                             localStorage.setItem("resetname", 'Anonymous')
-                            MPP.chat.send("Your reset name is now Anonymous.")
+                            send("Your reset name is now Anonymous.")
                             localStorage.setItem("resetcolor", randomhex)
-                            MPP.chat.send("Your reset color is now " + localStorage.resetcolor + ".")
+                            send("Your reset color is now " + localStorage.resetcolor + ".")
                         }
                     }
                 } else if (args[1] == 'get') {
                     if (args.length == 2) {
-                        MPP.chat.send("Please insert a variable. Variables: resetname, resetcolor")
+                        send("Please insert a variable. Variables: resetname, resetcolor")
                     } else if (args[2] == "resetname") {
-                        MPP.chat.send("Your reset name is " + localStorage.resetname)
+                        send("Your reset name is " + localStorage.resetname)
                     } else if (args[2] == "resetcolor") {
-                        MPP.chat.send('Your reset color is ' + localStorage.resetcolor)
+                        send('Your reset color is ' + localStorage.resetcolor)
                     }
                 }
             }
         }
         if (cmd == "mention") {
             if (args.length == 1) {
-                MPP.chat.send("Please specify the ID or name of the user to mention.")
+                send("Please specify the ID or name of the user to mention.")
             } else {
-                MPP.chat.send("@" + searchId(args[1]))
+                send("@" + searchId(args[1]))
             }
         }
         if (cmd == "refresh") {
-            MPP.chat.send("Refreshing...")
+            send("Refreshing...")
             location.replace(location.href)
         }
         if (cmd == "about") {
             if (args.length == 1) {
-                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version ${version}`)
+                send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version ${version}`)
             } else {
-                MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
             }
         }
         if (cmd == "playalone") {
@@ -687,21 +666,21 @@ MPP.client.on('a', function(m) {
                     "color2":"#000022"
                 }
             }]);
-            MPP.chat.send("**Playing alone**")
-            MPP.chat.send("────────────────")
-            MPP.chat.send("You are playing alone in a room by yourself, but you can always invite friends by sending them the link. " + location.href)
+            send("**Playing alone**")
+            send("────────────────")
+            send("You are playing alone in a room by yourself, but you can always invite friends by sending them the link. " + location.href)
         }
 
         if (cmd == "goto") {
             if (args.length == 1) {
-                MPP.chat.send("Please specify a room to go to.")
+                send("Please specify a room to go to.")
             } else {
                 MPP.client.setChannel(m.a.substring(4).trim())
                 window.history.replaceState(null, "", location.href.split('/?c=')[0] + "/?c=" + m.a.substring(4).trim())
             }
         }
         if (cmd == "whereami") {
-            MPP.chat.send("You're in the room \"" + MPP.client.channel._id + "\".")
+            send("You're in the room \"" + MPP.client.channel._id + "\".")
         }
         if (cmd == "name") {
             MPP.client.sendArray([{
@@ -710,7 +689,7 @@ MPP.client.on('a', function(m) {
                     name: m.a.substring(4).trim()
                 }
             }]);
-            MPP.chat.send("Name set to \"" + m.a.substring(4).trim() + "\".")
+            send("Name set to \"" + m.a.substring(4).trim() + "\".")
         }
         if (cmd == "color") {
             if (args[1].length == 6) {
@@ -720,7 +699,7 @@ MPP.client.on('a', function(m) {
                         color: "#" + args[1]
                     }
                 }]);
-                MPP.chat.send("Color set to #" + args[1] + ". - *" + colorname("#" + args[1]) + "*")
+                send("Color set to #" + args[1] + ". - *" + colorname("#" + args[1]) + "*")
             } else if (args[1].length == 7) {
                 MPP.client.sendArray([{
                     m: 'userset',
@@ -728,9 +707,9 @@ MPP.client.on('a', function(m) {
                         color: args[1]
                     }
                 }]);
-                MPP.chat.send("Color set to " + args[1] + ". - *" + colorname(args[1]) + "*")
+                send("Color set to " + args[1] + ". - *" + colorname(args[1]) + "*")
             } else if (args[1].length > 7) {
-                MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "*")
+                send(MPP.client.ppl[searchId(args[1])].name + "'s color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "*")
             }
         }
     }
