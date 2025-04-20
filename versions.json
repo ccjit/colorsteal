@@ -1,18 +1,18 @@
 {
   "latest": "1.1.9.5",
-  "previous": {
+  "previous": [
     "1.1.9",
     "1.1.8.5",
     "1.1.8",
     "1.1.7"
-  },
-  "unsupported": {
+  ],
+  "unsupported": [
     "1.1.6",
     "1.1.5",
     "1.1",
     "1.0"
-  },
+  ],
   "update": {
-    "description": "added new 8ball command, updated about command to use version variable, added more commands to help command"
+    "description": "added [checkversion] command"
   }
 }
