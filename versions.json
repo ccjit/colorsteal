@@ -14,6 +14,6 @@
     "1.0"
   ],
   "update": {
-    "description": "\"fixed\" most things; `help usage` is gone for good"
+    "description": "\"fixed\" most things; [help usage] is gone for good"
   }
 }
