@@ -1,24 +1,24 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.7
+// @version      1.1.8
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
 // @match        https://multiplayerpiano.net/*
 // @match        https://multiplayerpiano.dev/*
 // @match        https://mpp.8448.space/*
-// @license       MIT
+// @license      MIT
 // @icon         data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAAAXNSR0IArs4c6QAAAnpJREFUeF7tmlFShDAMhrfjDdRX9XLO6JH0ePqsZ8AJM2FiJ23DJiTAxhdZKIV8Tf4kQJmmabrc8F9JAOkBGQKpATesgZcUwcwCnSxQSmGj40yJoxkCYPyZDG3p3KYAjgAxAbRE0GL1LObYOkWrPaAWSqobNQDJWBzjpT8qANwK032tbVzV+jjs9zJ8uQdNCFgD8DYeIOzKAxJAQGPa7QUklaBE2GjMU1XvCebW6j/UAK8biL5OdoOR3SAXYt5CGOYBEVUim7ajPCABBLTbh/QAS0/ZFYC5DGWeONW1AaZJ3N+rO7g5R7VGmAg2n9BUobG2oaqzyPB8rQj+fn4Pa5mHt+fhGK5DxBVtrT7nHa4AJMbjTUohcM8QKIBenbCmO1WXwmg8GAbb+L+31BIIhwMABnPGc2BqACMRrENgrXCKQuRaDaDuTwG0thGUWAycBqqywBYa4GT3chkVAJhFAuHx/eWfXd4NTw+qGoBkxUbFi2SOrca4A4DVtyxvtWBcAfx8fM33C0K5FwguAGiVtzcIrgAwjyME+A0CGSmKIQDAcIQAACiQUUxLqsnRHPS4OwBMnZga1xi/tq+QgHAHIKkbRjde7srl/vVpNEx0PBwAunTdXLV6DGsvCAUwaqLQWM5rrLRgtwBO6wF1/0BDoPaI1jMGq9Wf0/K17bBIYTqDrhVDS+NDAWgBWp0f5gFWBmjnSQBRGqBdOavz0wPSAyJ7USs/VsyTIZAhkCHQ/jqx9bIRQu4s3LqfytaGjt61K7Qo7FQWABqqeVMbZtHKC88AJAbPnRP5emMvz/Wl9nKf5i/d4C0BqG1dQqD3dQVH70giiO8m6Ws5tOkPIuP6YibZoUkAAAAASUVORK5CYII=
 // @grant        none
 // ==/UserScript==
+/* finally unused code
 if (localStorage.resetname == undefined) {
-    localStorage.setItem('resetname', MPP.client.getOwnParticipant().name)
+    localStorage.setItem('resetname', MPP.client.ppl[MPP.client.getOwnParticipant()._id].name)
 }
 if (localStorage.resetcolor == undefined) {
-    localStorage.setItem('resetcolor', MPP.client.getOwnParticipant().color)
+    localStorage.setItem('resetcolor', MPP.client.ppl[MPP.client.getOwnParticipant()._id].color)
 }
-/*
 function countAllIdsFound(query) {
     let found = 0
     let ids = []
@@ -129,6 +129,36 @@ function blendColors(colorA, colorB, amount) {
   const b = Math.round(bA + (bB - bA) * amount).toString(16).padStart(2, '0');
   return '#' + r + g + b;
 }
+let operations = [
+    '+',
+    "-"
+]
+/* fix later
+function mathGame() {
+    MPP.chat.send("Get ready to do some math in 5 seconds!")
+    let x = Math.floor(Math.random() * 25)
+    let y = Math.floor(Math.random() * 25)
+    let op = Math.floor(Math.random() * operations.length)
+    let time = 0
+    let starttime = 0
+    setTimeout(function () {
+        let starttime = Date.now()
+        MPP.chat.send("Solve 〈 " + x + " " + op + " " + y + " 〉 as fast as you can!")
+    }, 5000)
+    while (true) {
+        let currtime = Date.now
+        MPP.client.on('a', function(m) {
+            if (m.a.split(' ')[0] == eval(JSON.stringify(x) + op + JSON.stringify(y))) {
+                localStorage.setItem('won', true)
+            } else {
+                localStorage.setItem('won', false)
+            }
+        });
+        if (localStorage.won == true) {
+            MPP.chat.send('')
+        }
+    }
+}*/
 const shitposts = [
     "Why So Serious? - https://chat.8448.space/files/RNTsRhvGcVWwizeoykerc5KYqZwRTZ2x1tuXoeRzsWbEavTrfqOaj7JOkZdE8mHJ.mp4",
     "Radiation - https://chat.8448.space/files/Lmkrb9sMOpdVTt4omsFhrvIaW86ZeTNGniGPk52tPXGpq3gaVhJEOLsqXOhyCMPA.mp4",
@@ -143,7 +173,7 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.1.7'
+let version = '1.1.8'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (version != json.latest) {
@@ -165,40 +195,43 @@ function checkVersion() {
 }
 MPP.client.on('hi', function () {
     if (localStorage.hasUsedColorstealBefore == undefined) {
-        setTimeout(function(){MPP.chat.receive({
-            "m": "a",
-            "t": Date.now(),
-            "a": "Thanks for using colorsteal! To get a list of commands you can try after installing this bot, use `help`. You don't need to provide any information for this bot, the needed info has already been stored.",
-            "p": {
-                "_id": "colors",
-                "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                "color": "#b3acf1",
-                "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
-            }
-        });
-        MPP.chat.receive({
-            "m": "a",
-            "t": Date.now(),
-            "a": "You can for example, steal the color from,,, let me pick,, uhh... you can steal the color from " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].name + " by using `steal " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]]._id.substring(0,6) + "`! ─ You can also set your color to a random one with `shuffle`, and if you like it, favorite it using `fave`!",
-            "p": {
-                "_id": "colors",
-                "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                "color": "#b3acf1",
-                "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
-            }
-        });
-        MPP.chat.receive({
-            "m": "a",
-            "t": Date.now(),
-            'a': "Don't worry! Only you can see these messages, and this won't happen again. Have fun using my bot! <3",
-            "p": {
-                "_id": "colors",
-                "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                "color": "#b3acf1",
-                "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
-            }
-        });
-        localStorage.setItem('hasUsedColorstealBefore', true)}, 5000)
+    localStorage.removeItem('resetname')
+    localStorage.removeItem('resetcolor')
+        setTimeout(function(){
+            MPP.chat.receive({
+                "m": "a",
+                "t": Date.now(),
+                "a": "Thanks for using colorsteal! To get a list of commands you can try after installing this bot, use `help`. You don't need to provide any information for this bot, the needed info will be stored after sending a message..",
+                "p": {
+                    "_id": "colors",
+                    "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                    "color": "#b3acf1",
+                    "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                }
+            });
+            MPP.chat.receive({
+                "m": "a",
+                "t": Date.now(),
+                "a": "You can for example, steal the color from,,, let me pick,, uhh... you can steal the color from " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].name + " by using `steal " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]]._id.substring(0,6) + "`! ─ You can also set your color to a random one with `shuffle`, and if you like it, favorite it using `fave`!",
+                "p": {
+                    "_id": "colors",
+                    "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                    "color": "#b3acf1",
+                    "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                }
+            });
+            MPP.chat.receive({
+                "m": "a",
+                "t": Date.now(),
+                'a': "Don't worry! Only you can see these messages, and this won't happen again. Have fun using my bot! <3",
+                "p": {
+                    "_id": "colors",
+                    "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                    "color": "#b3acf1",
+                    "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
+                }
+            });
+            localStorage.setItem('hasUsedColorstealBefore', true)}, 5000)
     }
 });
 MPP.client.on('a', function(m) {
@@ -209,6 +242,10 @@ MPP.client.on('a', function(m) {
     let colorname = function(hex) { if (new Color(hex).getName().length > 10) { return new Color(hex).getName().substring(10).trim() } else { return new Color(hex).getName() } }
     let shitpost = shitposts[Math.floor(Math.random()*shitposts.length)]
     // cmds
+    if (localStorage.resetname == undefined && localStorage.resetcolor == undefined) {
+        localStorage.setItem('resetname', MPP.client.getOwnParticipant().name)
+        localStorage.setItem('resetcolor', MPP.client.getOwnParticipant().color)
+    }
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "help") {
             if (args.length == 1) {
@@ -219,7 +256,7 @@ MPP.client.on('a', function(m) {
                 } else if (args[1] == "info") {
                     MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name.")
                 } else if (args[1] == "fun") {
-                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids")
+                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide")
                 } else if (args[1] == "other") {
                     MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items|| | Deleted commands: favestat - favorites a status | wipestats - wipes favorited stats | favestats - views favorited stats||")
                 } else if (args[1] == "usage") {
@@ -271,6 +308,8 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("ChOwn - This command sends the user ID of the person holding the crown.")
                     } else if (args[2] == "kick") {
                         MPP.chat.send("Kick - This command kicks the user with the ID or name of the person you provide. If the user isn't found, you kick yourself instead.")
+                    } else if (args[2] == "rate") {
+                        MPP.chat.send("Rate - This command tells you how associated you are with a certain topic.")
                     } /*else if (args[2] == "settings") {
                         MPP.chat.send("Settings - This command logs the current room settings in your DevTools console. You can access it by pressing F12, CTRL+Shift+J or CTRL+Shift+I and clicking on `Console`.")
                     } else if (args[2] == "favestat") {
@@ -333,6 +372,13 @@ MPP.client.on('a', function(m) {
                 }
             } else {
                 MPP.chat.send("There is no crown holder.")
+            }
+        }
+        if (cmd == "rate") {
+            if (args.length == 1) {
+                MPP.chat.send("You are 100% sending an empty topic to this command.")
+            } else {
+                MPP.chat.send(`You are ${Math.floor(Math.random()*100)}% ${m.a.substring(4).trim()}.`)
             }
         }
         if (cmd == "merge") {
