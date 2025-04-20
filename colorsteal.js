@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.8
+// @version      1.1.8.5
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -173,7 +173,7 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.1.8'
+let version = '1.1.8.5'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (version != json.latest) {
@@ -181,11 +181,11 @@ function checkVersion() {
                 MPP.chat.receive({
                     "m": "a",
                     "t": Date.now(),
-                    "a": "Please update colcrsteal! Current version: " + version + " - Latest version: " + json.latest + " - Update your script at https://greasyfork.org/en/scripts/533170-colorsteal and use \"refresh\" to refresh your page to apply the script.",
+                    "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Update your script at https://greasyfork.org/en/scripts/533170-colorsteal and use \"refresh\" to refresh your page to apply the script.",
                     "p": {
                         "_id": "colors",
                         "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                        "color": "#b3acf1",
+                        "color": "#ff4747",
                         "id": (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7) + (Math.random() + 1).toString(24).substring(7)
                     }
                 });
@@ -194,6 +194,7 @@ function checkVersion() {
     }));
 }
 MPP.client.on('hi', function () {
+    checkVersion()
     if (localStorage.hasUsedColorstealBefore == undefined) {
     localStorage.removeItem('resetname')
     localStorage.removeItem('resetcolor')
@@ -234,6 +235,9 @@ MPP.client.on('hi', function () {
             localStorage.setItem('hasUsedColorstealBefore', true)}, 5000)
     }
 });
+if (localStorage.counter == undefined) {
+    localStorage.setItem('counter', 0)
+}
 MPP.client.on('a', function(m) {
     let args = m.a.split(' ');
     let cmd = args[0];
@@ -245,6 +249,10 @@ MPP.client.on('a', function(m) {
     if (localStorage.resetname == undefined && localStorage.resetcolor == undefined) {
         localStorage.setItem('resetname', MPP.client.getOwnParticipant().name)
         localStorage.setItem('resetcolor', MPP.client.getOwnParticipant().color)
+    }
+    if (cmd == "add") {
+        localStorage.setItem('counter', parseInt(localStorage.counter) + 1)
+        MPP.chat.send("Counter: " + localStorage.counter)
     }
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "help") {
