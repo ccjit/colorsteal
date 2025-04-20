@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.1.8.5
+// @version      1.1.9
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -173,7 +173,7 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.1.8.5'
+let version = '1.1.9'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (version != json.latest) {
@@ -181,7 +181,7 @@ function checkVersion() {
                 MPP.chat.receive({
                     "m": "a",
                     "t": Date.now(),
-                    "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Update your script at https://greasyfork.org/en/scripts/533170-colorsteal and use \"refresh\" to refresh your page to apply the script.",
+                    "a": "Please update colorsteal! Current version: " + version + " - Latest version: " + json.latest + " - Update your script at https://greasyfork.org/en/scripts/533170-colorsteal or use and use \"refresh\" to refresh your page to apply the script.",
                     "p": {
                         "_id": "colors",
                         "name": "Colorsteal - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
@@ -235,6 +235,35 @@ MPP.client.on('hi', function () {
             localStorage.setItem('hasUsedColorstealBefore', true)}, 5000)
     }
 });
+let noargsball = [
+    "Reply hazy, try again",
+    "Ask again later",
+    "Better not tell you now",
+    "Cannot predict now",
+    "Concentrate and ask again"
+]
+let ball = [
+    "It is certain",
+    "It is decidedly so",
+    "Without a doubt",
+    "Yes definitely",
+    "You may rely on it",
+    "As I see it, yes",
+    "Most likely",
+    "Outlook good",
+    "Yes",
+    "Signs point to yes",
+    "Reply hazy, try again",
+    "Ask again later",
+    "Better not tell you now",
+    "Cannot predict now",
+    "Concentrate and ask again",
+    "Don't count on it",
+    "My reply is no",
+    "My sources say no",
+    "Outlook not so good",
+    "Very doubtful"
+]
 if (localStorage.counter == undefined) {
     localStorage.setItem('counter', 0)
 }
@@ -257,16 +286,29 @@ MPP.client.on('a', function(m) {
     if (m.p.id == MPP.client.participantId) {
         if (cmd == "help") {
             if (args.length == 1) {
-                MPP.chat.send("Please choose a category: userset, info, fun, other")
+                if ("crown" in MPP.client.channel) {
+                    if (MPP.cient.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
+                        MPP.chat.send("Please choose a category: userset, info, fun, crown, other - or use `help usage [command name]` to get the usage of a command")
+                    } else {
+                        MPP.chat.send("Please choose a category: userset, info, fun, other - or use `help usage [command name]` to get the usage of a command")
+                    }
+                }
             } else if (args.length == 2) {
+                if ("crown" in MPP.client.channel) {
+                    if (MPP.cient.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
+                        if (args[1] == 'crown') {
+                            MPP.chat.send("Commands: kick - kicks an user")
+                        }
+                    }
+                }
                 if (args[1] == "userset") {
                     MPP.chat.send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
                 } else if (args[1] == "info") {
-                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name.")
+                    MPP.chat.send("Commands: mycolor - tells you your current color | settings - logs room settings to console | about - info about bot | help - lists commands OR lists info about command - Usage: help - tells you possible commands ; help usage [command name] - tells you command usage | define - defines a variable. | whereami - tells you the room name. | chown - tells you who is holding crown")
                 } else if (args[1] == "fun") {
-                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide")
+                    MPP.chat.send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide | 8ball - shakes an 8 ball")
                 } else if (args[1] == "other") {
-                    MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items|| | Deleted commands: favestat - favorites a status | wipestats - wipes favorited stats | favestats - views favorited stats||")
+                    MPP.chat.send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items | mention - mentions an user")
                 } else if (args[1] == "usage") {
                     if (args.length == 2) {
                         MPP.chat.send("Please specify a command to know about. Example: help usage steal")
@@ -318,6 +360,8 @@ MPP.client.on('a', function(m) {
                         MPP.chat.send("Kick - This command kicks the user with the ID or name of the person you provide. If the user isn't found, you kick yourself instead.")
                     } else if (args[2] == "rate") {
                         MPP.chat.send("Rate - This command tells you how associated you are with a certain topic.")
+                    } else if (args[2] == "8ball") {
+                        MPP.chat.send("8 Ball - Shakes an 8 Ball to answer your question.")
                     } /*else if (args[2] == "settings") {
                         MPP.chat.send("Settings - This command logs the current room settings in your DevTools console. You can access it by pressing F12, CTRL+Shift+J or CTRL+Shift+I and clicking on `Console`.")
                     } else if (args[2] == "favestat") {
@@ -501,6 +545,13 @@ MPP.client.on('a', function(m) {
             }]);
             MPP.chat.send("Shuffled color: " + randomhex + " - " + colorname(randomhex))
         }
+        if (cmd == "8ball") {
+            if (args.length == 1) {
+                MPP.chat.send(noargsball[Math.floor(Math.random()*noargsball.length)])
+            } else {
+                MPP.chat.send(ball[Math.floor(Math.random()*ball.length)])
+            }
+        }
         if (cmd == "steal") {
             MPP.client.sendArray([{
                 m: 'userset',
@@ -586,7 +637,7 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "about") {
             if (args.length == 1) {
-                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version 1.1.7`)
+                MPP.chat.send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version ${version}`)
             } else {
                 MPP.chat.send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
             }
@@ -606,9 +657,14 @@ MPP.client.on('a', function(m) {
             MPP.chat.send("────────────────")
             MPP.chat.send("You are playing alone in a room by yourself, but you can always invite friends by sending them the link. " + location.href)
         }
+
         if (cmd == "goto") {
-            MPP.client.setChannel(m.a.substring(4).trim())
-            window.history.replaceState(null, "", location.href.split('/?c=')[0] + "/?c=" + m.a.substring(4).trim())
+            if (args.length == 1) {
+                MPP.chat.send("Please specify a room to go to.")
+            } else {
+                MPP.client.setChannel(m.a.substring(4).trim())
+                window.history.replaceState(null, "", location.href.split('/?c=')[0] + "/?c=" + m.a.substring(4).trim())
+            }
         }
         if (cmd == "whereami") {
             MPP.chat.send("You're in the room \"" + MPP.client.channel._id + "\".")
