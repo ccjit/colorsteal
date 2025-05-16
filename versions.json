@@ -1,8 +1,8 @@
 {
-  "latest": "1.2-beta (patched)",
-  "previous": "'1.2-beta', '1.2', '1.1.9.75', '1.1.9.5', '1.1.9', '1.1.8.5', '1.1.8', '1.1.7'",
+  "latest": "1.2-preview",
+  "previous": "'1.2-beta (patched)', '1.2-beta', '1.2', '1.1.9.75', '1.1.9.5', '1.1.9', '1.1.8.5', '1.1.8', '1.1.7'",
   "unsupported": "'1.1.6', '1.1.5', '1.1', '1.0', '1.0-alpha9', '1.0-alpha8', '1.0-alpha7', '1.0-alpha6', '1.0-alpha5', '1.0-alpha4', '1.0-alpha3', '1.0-alpha2', '0.0'",
   "update": {
-    "description": "removed unfinished content and did stuff to about command"
+    "description": "Added \"reverse\" command, added \"dm\" command, added new shitpost to \"shitposts\" command, added public command toggle (use \"define public\" to try it out!), added tag support to \"about <user>\" command, added new supported Multiplayer Piano URL (https://piano.mpp.community), added check for valid-ness of hex colors, and fixed many previous bugs."
   }
 }
