@@ -1,17 +1,19 @@
 // ==UserScript==
 // @name         colorsteal
 // @namespace    https://ccjit.github.io/my-site
-// @version      1.2-beta (patched)
+// @version      1.2-preview
 // @description  steal colorssss >:33333
 // @author       ccjt
 // @match        https://multiplayerpiano.org/*
 // @match        https://multiplayerpiano.net/*
+// @match        https://piano.mpp.community/*
 // @match        https://multiplayerpiano.dev/*
 // @match        https://mpp.8448.space/*
 // @license      MIT
 // @icon         data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAAAXNSR0IArs4c6QAAAnpJREFUeF7tmlFShDAMhrfjDdRX9XLO6JH0ePqsZ8AJM2FiJ23DJiTAxhdZKIV8Tf4kQJmmabrc8F9JAOkBGQKpATesgZcUwcwCnSxQSmGj40yJoxkCYPyZDG3p3KYAjgAxAbRE0GL1LObYOkWrPaAWSqobNQDJWBzjpT8qANwK032tbVzV+jjs9zJ8uQdNCFgD8DYeIOzKAxJAQGPa7QUklaBE2GjMU1XvCebW6j/UAK8biL5OdoOR3SAXYt5CGOYBEVUim7ajPCABBLTbh/QAS0/ZFYC5DGWeONW1AaZJ3N+rO7g5R7VGmAg2n9BUobG2oaqzyPB8rQj+fn4Pa5mHt+fhGK5DxBVtrT7nHa4AJMbjTUohcM8QKIBenbCmO1WXwmg8GAbb+L+31BIIhwMABnPGc2BqACMRrENgrXCKQuRaDaDuTwG0thGUWAycBqqywBYa4GT3chkVAJhFAuHx/eWfXd4NTw+qGoBkxUbFi2SOrca4A4DVtyxvtWBcAfx8fM33C0K5FwguAGiVtzcIrgAwjyME+A0CGSmKIQDAcIQAACiQUUxLqsnRHPS4OwBMnZga1xi/tq+QgHAHIKkbRjde7srl/vVpNEx0PBwAunTdXLV6DGsvCAUwaqLQWM5rrLRgtwBO6wF1/0BDoPaI1jMGq9Wf0/K17bBIYTqDrhVDS+NDAWgBWp0f5gFWBmjnSQBRGqBdOavz0wPSAyJ7USs/VsyTIZAhkCHQ/jqx9bIRQu4s3LqfytaGjt61K7Qo7FQWABqqeVMbZtHKC88AJAbPnRP5emMvz/Wl9nKf5i/d4C0BqG1dQqD3dQVH70giiO8m6Ws5tOkPIuP6YibZoUkAAAAASUVORK5CYII=
 // @grant        none
 // ==/UserScript==
+let version = '1.2'
 /* finally unused code
 if (localStorage.resetname == undefined) {
     localStorage.setItem('resetname', MPP.client.ppl[MPP.client.getOwnParticipant()._id].name)
@@ -87,6 +89,16 @@ function searchId(query) {
             return findIdByName(query).id
         }
     }
+}
+function reverseString(string) {
+    let strLen = string.length
+    let strChars = string.split('')
+    let newStr = []
+    for (let i = 0; i < strLen; i++) {
+        newStr.push(strChars[strChars.length - i])
+    }
+    newStr.push(strChars[0])
+    return newStr.join('')
 }
 function getPpl() {
     let str = undefined
@@ -169,12 +181,12 @@ const shitposts = [
     'Black Pencil - https://chat.8448.space/files/VFceLyblUBBmrRkZpF5BlYX07KMaE0RT9Y1TsrguDCijFVQSfRlER2DKPAKNl0Za.mp4',
     'Pink Revolution - https://chat.8448.space/files/FQQVITzscnPNp7RQX6zukBjtoUpoCjcnBG2wyvlDOiLr5lOyCrexH3EuiSmPA05x.mp4',
     'Double Сum - https://chat.8448.space/files/DGGpVYToY08o3ysAfLIrCLHNkCAhK9XhMZlex5RrlXCERC7j0yrBTnDcfqcQTf9i.mp4',
-    'LoFi Radio - https://chat.8448.space/files/boFcVTEcr4FIFajIbRSwtgjiqfkpHozi9z97ZxhLsSyxcY2Bzt7NYapHosiDptFI.mp4'
+    'LoFi Radio - https://chat.8448.space/files/boFcVTEcr4FIFajIbRSwtgjiqfkpHozi9z97ZxhLsSyxcY2Bzt7NYapHosiDptFI.mp4',
+    'HAAAIIIII o(≧▽≦)o 🍦 - https://chat.8448.space/files/XHkeilgiMhOfgXRoVYa6Ei9SoQENlpjhMUPp8Bgz9mtXm3tyC1r5fsOmdor0VJIp.mp4'
 ]
 // "u": "n", derwear haha gottem
 // (^preserve^)
 let mem = 'lobby'
-let version = '1.2-beta (patched)'
 function checkVersion() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
         if (Object.values(json).includes(version) && version != json.latest) {
@@ -208,7 +220,7 @@ function checkVersion() {
                 }
             })
         }}));
- 
+
 }
 function checkVersionManual() {
     fetch('https://raw.githubusercontent.com/ccjit/colorsteal/refs/heads/main/versions.json').then(r => r.json().then(json => {
@@ -257,7 +269,7 @@ MPP.client.on('hi', function () {
     checkVersion()
     if (localStorage.hasUsedColorstealBefore == undefined) {
         localStorage.removeItem('resetname')
-        localStorage.fremoveItem('resetcolor')
+        localStorage.removeItem('resetcolor')
         setTimeout(function(){
             MPP.chat.receive({
                 "m": "a",
@@ -350,6 +362,7 @@ MPP.client.on('a', function(m) {
             }
         });
     }
+    let public = false
     let randroom = "Room" + Math.floor(Math.random() * 1e12)
     let randomhex = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
     let colorname = function(hex) { if (new Color(hex).getName().length > 10) { return new Color(hex).getName().substring(10).trim() } else { return new Color(hex).getName() } }
@@ -363,28 +376,46 @@ MPP.client.on('a', function(m) {
         localStorage.setItem('counter', parseInt(localStorage.counter) + 1)
         send("Counter: " + localStorage.counter)
     }
-    if (m.p.id == MPP.client.participantId) {
+    if (m.p.id == MPP.client.participantId || public) {
+        if (cmd == "reverse") {
+            if (args.length == 1) {
+                send("\"Look ma! I'm not putting any text to the `reverse` command!\" in reverse is \"" + reverseString("Look ma! I'm not putting any text to the `reverse` command!") + "\"")
+            } else {
+                send("\"" + m.a.substring(7).trim() + "\" in reverse is \"" + reverseString(m.a.substring(7).trim()) + "\"")
+            }
+        }
         if (cmd == "checkversion") {
-            checkVersionManual()
+            if (window.navigator.onLine) {
+                checkVersionManual()
+            } else {
+                receive({
+                    color: "#ff4747",
+                    name: "System",
+                    _id: "system",
+                    id: "systemsystemsystemsystem"
+                }, "You are offline. Try checking your version when you're back online.")
+            }
         }
         if (cmd == 'knownnames') {
             if (args.length == 1) {
- 
+
             }
         }
         if (cmd == "help") {
             if (localStorage.help) {
                 if (args.length == 1) {
-                    send("Please choose a category: userset, info, fun, other") // or use `help usage [command name]` to get the usage of a command - but thst doesn't actually work
+                    send("Please choose a category: userset, info, fun, other - Do `help <category>` to access a category.") // or use `help usage [command name]` to get the usage of a command - but that doesn't actually work
                 } else if (args.length == 2) {
                     if (args[1] == "userset") {
                         send("Commands: steal - steals color from ID | color - sets color to hex | name - sets name | shuffle - makes you a random color | reset - resets you to your defaults | stat - this command sets a status for you")
                     } else if (args[1] == "info") {
                         send("Commands: mycolor - tells you your current color | settings - sends room settings to chat | about - info about bot or info about user | help - lists commands | define - defines a variable | whereami - tells you the room name | chown - tells you who is holding crown | checkversion - checks your version")
                     } else if (args[1] == "fun") {
-                        send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide | 8ball - shakes an 8 ball")
+                        send("Commands: flip - flips or fails | shitpost - sends a shitpost | merge - merges 2 colors | mergeid - merge colors from 2 ids | rate - rates you on the subject you provide | 8ball - shakes an 8 ball | reverse - reverses text")
                     } else if (args[1] == "other") {
-                        send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items | mention - mentions a user | kick - kicks a user if holding crown")
+                        send("Commands: fave - favorites an item | faves - tells you favorited items | wipefaves - erases favorited items | mention - mentions a user | kick - kicks a user if holding crown | dm - starts a DM (direct message) to the specified user")
+                    } else if (args[1] != "userset" && args[1] != "info" && args[1] != "fun" && args[1] != "other") {
+                        send("Sorry, but that category doesn't exist. Valid categories: userset, info, fun, other - Do `help <category>` to access a category.")
                     } /*else if (args[1] == "usage") { fix when you can, you dummy
                     if (args.length == 2) {
                         send("Please specify a command to know about. Example: help usage steal")
@@ -489,6 +520,18 @@ MPP.client.on('a', function(m) {
                 }
             } else {
                 send("You can't kick someone in a lobby room.")
+            }
+        }
+        if (cmd == "dm") {
+            if (args.length == 1) {
+                send("Please specify an ID or name to DM.")
+            } else {
+                if (searchId(m.a.substring(2).trim()) == undefined) {
+                    send("Sorry, but that ID/name wasn't found in the room. Maybe you've misspelled it.")
+                } else {
+                    MPP.chat.startDM(MPP.client.ppl[searchId(m.a.substring(2).trim())])
+                    document.getElementById('chat-input').placeholder = "Direct messaging " + MPP.client.ppl[searchId(m.a.substring(2).trim())].name + " - Press enter 2 times to exit DM"
+                }
             }
         }
         if (cmd == "chown") {
@@ -643,68 +686,78 @@ MPP.client.on('a', function(m) {
             send('Stolen from ' + MPP.client.ppl[searchId(args[1])].name + " (" + searchId(args[1]).substring(0,6) + ") successfully.")
         }
         if (cmd == "reset") {
-            if (args.length == 1) {
-                MPP.client.sendArray([{
-                    m: 'userset',
-                    set: {
-                        name: localStorage.resetname,
-                        color: localStorage.resetcolor
+            if (localStorage.resetname == undefined && localStorage.resetcolor == undefined) {
+                send("It seems you don't have your reset information defined. Use `define reset name " + m.p.name + "` and `define reset color " + m.p.color + "` to define your reset information.")
+            } else
+            if (localStorage.resetname == undefined) {
+                send("It seems you don't have your reset name defined. Use `define reset name " + m.p.name + "` to define your reset name.")
+            } else
+            if (localStorage.resetcolor == undefined) {
+                send("It seems you don't have your reset color defined. Use `define reset color " + m.p.color + "` to define your reset color.")
+            } else {
+                if (args.length == 1) {
+                    MPP.client.sendArray([{
+                        m: 'userset',
+                        set: {
+                            name: localStorage.resetname,
+                            color: localStorage.resetcolor
                     }
-                }]);
-                receive({
-                    "color": "#6dee49", // pastel green
-                    "_id": "colors",
-                    "name": "Reset - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                    "id": "colorsteal"
-                }, "Reset successfully.")
-                receive({
-                    "color": localStorage.resetcolor,
-                    "name": localStorage.resetname,
-                    "_id": "colors",
-                    "id": "colorsteal"
-                }, "< If this isn't your user, your userquota ran out. You can try resetting yourself after 12 minutes in that case.")
-            } else if (args[1] == "color") {
-                MPP.client.sendArray([{
-                    m: 'userset',
-                    set: {
-                        color: localStorage.resetcolor
-                    }
-                }]);
-                receive({
-                    "color": localStorage.resetcolor,
-                    "_id": "colors",
-                    "name": "Reset - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                    "id": "colorsteal"
-                }, "Reset your color successfully.")
-                receive({
-                    "color": MPP.client.getOwnParticipant().color,
-                    "_id": "colors",
-                    "name": localStorage.resetname,
-                    "id": "colorsteal"
-                }, "< If this isn't your user, your userquota ran out. You can try resetting yourself after 12 minutes in that case.")
-            } else if (args[1] == "name") {
-                MPP.client.sendArray([{
-                    m: 'userset',
-                    set: {
-                        name: localStorage.resetname
-                    }
-                }]);
-                receive({
-                    "color": "#6dee49", // pastel green
-                    "_id": "colors",
-                    "name": "Reset - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
-                    "id": "colorsteal"
-                }, "Reset your name successfully.")
-                receive({
-                    "color": MPP.client.getOwnParticipant().color,
-                    "_id": "colors",
-                    "name": MPP.client.getOwnParticipant().name,
-                    "id": "colorsteal"
-                }, "< If this isn't your user, your userquota ran out. You can try resetting yourself after 12 minutes in that case.")
+                    }]);
+                    receive({
+                        "color": "#6dee49", // pastel green
+                        "_id": "colors",
+                        "name": "Reset - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                        "id": "colorsteal"
+                    }, "Reset successfully.")
+                    receive({
+                        "color": localStorage.resetcolor,
+                        "name": localStorage.resetname,
+                        "_id": "colors",
+                        "id": "colorsteal"
+                    }, "< If this isn't your username and color, your userquota ran out. You can try resetting yourself after 12 minutes in that case.")
+                } else if (args[1] == "color") {
+                    MPP.client.sendArray([{
+                        m: 'userset',
+                        set: {
+                            color: localStorage.resetcolor
+                        }
+                    }]);
+                    receive({
+                        "color": localStorage.resetcolor,
+                        "_id": "colors",
+                        "name": "Reset - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                        "id": "colorsteal"
+                    }, "Reset your color successfully.")
+                    receive({
+                        "color": MPP.client.getOwnParticipant().color,
+                        "_id": "colors",
+                        "name": localStorage.resetname,
+                        "id": "colorsteal"
+                    }, "< If this isn't your color, your userquota ran out. You can try resetting yourself after 12 minutes in that case.")
+                } else if (args[1] == "name") {
+                    MPP.client.sendArray([{
+                        m: 'userset',
+                        set: {
+                            name: localStorage.resetname
+                        }
+                    }]);
+                    receive({
+                        "color": "#6dee49", // pastel green
+                        "_id": "colors",
+                        "name": "Reset - ꧁⌬♩♪♫ ⋰〈 🏳️‍⚧️ ᴄᴄᴊᴛ 🏳️‍⚧️ ⌨ 〉⋱ ♫♪♩⌬꧂",
+                        "id": "colorsteal"
+                    }, "Reset your name successfully.")
+                    receive({
+                        "color": MPP.client.getOwnParticipant().color,
+                        "_id": "colors",
+                        "name": MPP.client.getOwnParticipant().name,
+                        "id": "colorsteal"
+                    }, "< If this isn't your username, your userquota ran out. You can try resetting yourself after 12 minutes in that case.")
+                }
             }
         }
         if (cmd == "mycolor") {
-            send(m.p.color + " - *" + colorname(m.p.color) + "*")
+            send("Your user color is " + m.p.color.toUpperCase() + " - *" + colorname(m.p.color) + "*")
         }
         if (cmd == "settings") {
             send(`Room settings - Room name: ${MPP.client.channel._id} - Limit: ${MPP.client.channel.settings.limit} - Inner color: ${MPP.client.channel.settings.color} - Outer color: ${MPP.client.channel.settings.color2} - Visible: ${MPP.client.channel.settings.visible} - Crown holder: ${MPP.client.channel.crown.userId}`)
@@ -721,8 +774,15 @@ MPP.client.on('a', function(m) {
                             localStorage.setItem("resetname", m.a.substring(17).trim())
                             send("Your reset name is now " + localStorage.resetname + ".")
                         } else if (args[2] == "color") {
-                            localStorage.setItem("resetcolor", m.a.substring(18).trim())
-                            send("Your reset color is now " + localStorage.resetcolor + ".")
+                            if (args[3].length == 7) {
+                                localStorage.setItem("resetcolor", m.a.substring(18).trim())
+                                send("Your reset color is now " + localStorage.resetcolor + ".")
+                            } else if (args[3].length == 6) {
+                                localStorage.setItem("resetcolor", "#" + m.a.substring(18).trim())
+                                send("Your reset color is now " + localStorage.resetcolor + ".")
+                            } else {
+                                send("That is not a valid hex color. Please specify a 6 digit* hex color. (*`#` symbol is optional)")
+                            }
                         } else if (args[2] == "default") {
                             localStorage.setItem("resetname", 'Anonymous')
                             send("Your reset name is now Anonymous.")
@@ -740,6 +800,21 @@ MPP.client.on('a', function(m) {
                         } else if (args[2] == "on") {
                             localStorage.setItem("help", true)
                             send("Help command is on.")
+                        }
+                    }
+                } else if (args[1] == "public") {
+                    if (args.length == 2) {
+                        send("Please insert a value to define to. Values: true, false, toggle - `Note: This variable is reset to false everytime you refresh for security measures. There will be a way to bypass this soon.`")
+                    } else {
+                        if (args[2] == "false") {
+                            public = false
+                            send("Commands are now private.")
+                        } else if (args[2] == "true") {
+                            public = true
+                            send("Commands are now public.")
+                        } else if (args[2] == "toggle") {
+                            public = !public
+                            send(public ? "Commands are now public." : "Commands are now private.")
                         }
                     }
                 } else if (args[1] == 'get') {
@@ -772,9 +847,17 @@ MPP.client.on('a', function(m) {
                     send("Your info - Name: " + MPP.client.ppl[MPP.client.getOwnParticipant()._id].name + " - Color: " + MPP.client.ppl[MPP.client.getOwnParticipant()._id].color + " - *" + colorname(MPP.client.ppl[MPP.client.getOwnParticipant()._id].color) + "* - ID: " + MPP.client.getOwnParticipant()._id + " - Mouse Position: X" + MPP.client.ppl[MPP.client.getOwnParticipant()._id].x + ", Y" + MPP.client.ppl[MPP.client.getOwnParticipant()._id].y + " - AFK: " + MPP.client.ppl[MPP.client.getOwnParticipant()._id].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
                 } else {
                     if (MPP.client.ppl[searchId(args[1])].name.substring(MPP.client.ppl[searchId(args[1])].name.length - 1, MPP.client.ppl[searchId(args[1])].name.length).trim() == "s") {
+                        if ('tag' in MPP.client.ppl[searchId(args[1])]) {
                         send(MPP.client.ppl[searchId(args[1])].name + "' info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                        } else {
+                        send(MPP.client.ppl[searchId(args[1])].name + "' info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                        }
                     } else {
-                        send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                        if ('tag' in MPP.client.ppl[searchId(args[1])]) {
+                            send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " - Tag: " + MPP.client.ppl[searchId(args[1])].tag.text + " - Tag color: " + MPP.client.ppl[searchId(args[1])].tag.color + "||You can use \"steal " + args[1] + "\" to steal their color!||")
+                        } else {
+                            send(MPP.client.ppl[searchId(args[1])].name + "'s info - Name: " + MPP.client.ppl[searchId(args[1])].name + " - Color: " + MPP.client.ppl[searchId(args[1])].color + " - *" + colorname(MPP.client.ppl[searchId(args[1])].color) + "* - ID: " + searchId(args[1]) + " - Mouse Position: X" + MPP.client.ppl[searchId(args[1])].x + ", Y" + MPP.client.ppl[searchId(args[1])].y + " - AFK: " + MPP.client.ppl[searchId(args[1])].afk + " ||You can use \"steal " + args[1] + "\" to steal their color!||")
+                        }
                     }
                 }
             }
